@@ -34,7 +34,7 @@
   <script>
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // 로그인 상태일 때 사용자 정보 로드
+        // 로그인 상태
         const uid = user.uid;
         document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
 
@@ -43,14 +43,12 @@
           document.getElementById("points").textContent = points;
         });
 
-        // 로그아웃 후 돌아왔을 때 "로그아웃 되었습니다." 메시지 표시
         if (localStorage.getItem("justLoggedOut") === "true") {
           alert("로그아웃 되었습니다.");
           localStorage.removeItem("justLoggedOut");
         }
-
       } else {
-        // 비로그인 상태로 main 접근 시
+        // 로그인 안 된 상태: main.html 직접 접근 시
         alert("로그인이 필요합니다.");
         window.location.href = "login.html";
       }
@@ -87,7 +85,6 @@
     document.getElementById("logout").addEventListener("click", () => {
       firebase.auth().signOut()
         .then(() => {
-          // 로그아웃 플래그를 설정해서 main.html에 알림 띄우게 함
           localStorage.setItem("justLoggedOut", "true");
           window.location.href = "login.html";
         })
