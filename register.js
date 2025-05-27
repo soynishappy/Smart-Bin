@@ -8,16 +8,15 @@ document.getElementById('register-form').addEventListener('submit', function (e)
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      // ✅ 회원가입 성공 시 실행
       const user = userCredential.user;
       const uid = user.uid;
 
-      // ✅ Realtime Database에 사용자 정보 저장
-      firebase.database().ref('users/' + uid).set({
+      return firebase.database().ref('users/' + uid).set({
         email: email,
         points: 0
       });
-
+    })
+    .then(() => {
       alert('회원가입 성공! 로그인 페이지로 이동합니다.');
       window.location.href = 'login.html';
     })
