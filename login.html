@@ -33,20 +33,23 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 로그인 페이지 로드 시 justLoggedOut 체크해서 처리
-    window.addEventListener("load", () => {
-      if (localStorage.getItem("justLoggedOut")) {
-        // 로그아웃해서 돌아온 상태면 alert 안띄움
-        localStorage.removeItem("justLoggedOut");
-      }
-    });
-
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        // 이미 로그인 상태면 바로 메인으로 이동
+        // 로그인 상태면 메인으로 이동
         window.location.href = "main.html";
+      } else {
+        // 로그아웃 후 돌아온 경우 플래그 확인
+        const justLoggedOut = localStorage.getItem("justLoggedOut");
+        if (justLoggedOut) {
+          // 플래그 삭제하고 아무 알림 없이 로그인 화면 유지
+          localStorage.removeItem("justLoggedOut");
+          // 여기서 아무 alert도 없음! 그냥 로그인 폼 보여줌
+        } else {
+          // 플래그 없으면 "로그인이 필요합니다" 띄우고 로그인 화면 유지
+          alert("로그인이 필요합니다.");
+          // 필요하면 로그인 화면 유지(이미 로그인 페이지니까 별도 이동 필요 없음)
+        }
       }
-      // 로그인 상태 아니면 그냥 로그인 화면 유지 (알림 없음)
     });
 
     document.getElementById("login-form").addEventListener("submit", (e) => {
@@ -63,3 +66,22 @@
           } else {
             localStorage.removeItem("savedEmail");
           }
+          alert(`환영합니다, ${userCredential.user.email}님!`);
+          window.location.href = "main.html";
+        })
+        .catch((error) => {
+          alert("로그인 실패: " + error.message);
+        });
+    });
+
+    window.addEventListener("load", () => {
+      const savedEmail = localStorage.getItem("savedEmail");
+      if (savedEmail) {
+        document.getElementById("email").value = savedEmail;
+        document.getElementById("auto-login").checked = true;
+      }
+    });
+  </script>
+</body>
+</html>
+
