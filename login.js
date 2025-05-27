@@ -1,5 +1,3 @@
-// login.js
-
 document.getElementById('login-form').addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -7,9 +5,9 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
   const password = document.getElementById('password').value;
 
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
+    .then(() => {
       alert('로그인 성공!');
-      window.location.href = 'main.html'; // ✅ 이게 실행돼야 main.html로 이동
+      window.location.href = 'main.html';
     })
     .catch((error) => {
       alert('로그인 실패: ' + error.message);
