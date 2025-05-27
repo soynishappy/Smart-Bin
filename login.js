@@ -8,10 +8,8 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
 
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      // 로그인 성공
       alert('로그인 성공!');
-      // 로그인 후 이동할 페이지 (예: main.html)
-      window.location.href = 'main.html';
+      window.location.href = 'main.html'; // ✅ 이게 실행돼야 main.html로 이동
     })
     .catch((error) => {
       alert('로그인 실패: ' + error.message);
