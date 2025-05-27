@@ -29,18 +29,27 @@
       storageBucket: "smart-5c491.appspot.com",
       messagingSenderId: "1002873500741",
       appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
-      measurementId: "G-YMSX9299M2"
+      measurementId: "G-YMSX9299M2",
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 로그인 상태 확인 (알림 없이 바로 메인 페이지로)
-    firebase.auth().onAuthStateChanged(user => {
+    // 로그아웃 후 바로 온 경우 alert 띄우지 않도록 처리
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("justLoggedOut")) {
+        localStorage.removeItem("justLoggedOut");
+      } else {
+        // 필요하면 여기에 alert("로그인이 필요합니다."); 추가 가능
+      }
+    });
+
+    // 자동 로그인 상태 체크
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         window.location.href = "main.html";
       }
     });
 
-    // 로그인 폼 처리 (login.js 내부 내용도 이 안에 작성 가능)
+    // 로그인 처리
     document.getElementById("login-form").addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -48,22 +57,30 @@
       const password = document.getElementById("password").value;
       const autoLoginChecked = document.getElementById("auto-login").checked;
 
-      // 로그인 시 인증 상태 유지 방식 설정
-      const persistence = autoLoginChecked
-        ? firebase.auth.Auth.Persistence.LOCAL    // 브라우저 닫아도 로그인 유지
-        : firebase.auth.Auth.Persistence.SESSION; // 탭 닫으면 로그인 해제
-
-      firebase.auth().setPersistence(persistence)
-        .then(() => {
-          return firebase.auth().signInWithEmailAndPassword(email, password);
-        })
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
+          if (autoLoginChecked) {
+            localStorage.setItem("savedEmail", email);
+          } else {
+            localStorage.removeItem("savedEmail");
+          }
           alert(`환영합니다, ${userCredential.user.email}님!`);
           window.location.href = "main.html";
         })
-        .catch(error => {
-          alert(`로그인 실패: ${error.message}`);
+        .catch((error) => {
+          alert("로그인 실패: " + error.message);
         });
+    });
+
+    // 이메일 저장해두기 (자동 입력)
+    window.addEventListener("load", () => {
+      const savedEmail = localStorage.getItem("savedEmail");
+      if (savedEmail) {
+        document.getElementById("email").value = savedEmail;
+        document.getElementById("auto-login").checked = true;
+      }
     });
   </script>
 </body>
