@@ -49,14 +49,6 @@ document.getElementById("login-form").addEventListener("submit", (e) => {
       window.location.href = "main.html";
     })
 .catch(error => {
-  const msg = error.message.toLowerCase();
-  if (
-    msg.includes("user-not-found") ||
-    msg.includes("wrong-password") ||
-    msg.includes("invalid-login-credentials")
-  ) {
-    alert("이메일 또는 비밀번호를 확인해주세요.");
-  } else {
-    alert(`로그인 실패: ${error.message}`);
-  }
+  // 무조건 오류 메시지를 동일하게 띄움
+  alert("이메일 또는 비밀번호를 확인해주세요.");
 });
