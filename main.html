@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>메인 페이지</title>
 </head>
 <body>
@@ -9,55 +9,44 @@
   <p id="user-info">사용자 정보를 불러오는 중...</p>
   <p>포인트: <span id="points">0</span></p>
 
+  <!-- 테스트용 포인트 적립 버튼 -->
   <button id="add-point-btn">포인트 적립 (테스트용)</button>
+
   <button id="logout">로그아웃</button>
 
+  <!-- Firebase SDK 및 초기화 -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <script>
+    // Firebase 설정
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID",
-      databaseURL: "YOUR_DATABASE_URL"
+      apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+      authDomain: "smart-5c491.firebaseapp.com",
+      projectId: "smart-5c491",
+      storageBucket: "smart-5c491.appspot.com",
+      messagingSenderId: "1002873500741",
+      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+      measurementId: "G-YMSX9299M2",
+      databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
     };
     firebase.initializeApp(firebaseConfig);
+  </script>
 
-    // onAuthStateChanged 콜백에서 로그아웃 플래그 확인용 함수
-    function justLoggedOut() {
-      return localStorage.getItem("justLoggedOut") === "true";
-    }
-
-    // 플래그 초기화 함수
-    function clearJustLoggedOutFlag() {
-      localStorage.removeItem("justLoggedOut");
-    }
-
+  <script>
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // 로그인 상태
-        clearJustLoggedOutFlag(); // 혹시 플래그가 있으면 삭제
-        document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
-        firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
+        const uid = user.uid;
+        document.getElementById('user-info').textContent = 환영합니다, ${user.email}님!;
+
+        firebase.database().ref('users/' + uid + '/points').once('value').then(snapshot => {
           const points = snapshot.val() || 0;
-          document.getElementById("points").textContent = points;
+          document.getElementById('points').textContent = points;
         });
       } else {
-        // 비로그인 상태
-        if (justLoggedOut()) {
-          // 로그아웃 직후면 "로그인이 필요합니다" alert 안 띄움
-          clearJustLoggedOutFlag();
-          window.location.href = "login.html";
-        } else {
-          // 로그아웃 직후가 아니면 알림 띄우고 이동
-          alert("로그인이 필요합니다.");
-          window.location.href = "login.html";
-        }
+        alert("로그인이 필요합니다.");
+        window.location.href = 'login.html';
       }
     });
 
@@ -67,31 +56,35 @@
         alert('로그인 상태가 아닙니다!');
         return;
       }
-      const userRef = firebase.database().ref('users/' + user.uid);
+      const uid = user.uid;
+      const userRef = firebase.database().ref('users/' + uid);
+
       userRef.once('value').then(snapshot => {
-        let currentPoints = snapshot.val()?.points || 0;
+        let currentPoints = 0;
+        if (snapshot.exists() && snapshot.val().points) {
+          currentPoints = snapshot.val().points;
+        }
         const updatedPoints = currentPoints + 1;
-        userRef.update({ points: updatedPoints }).then(() => {
-          alert(`포인트가 적립되었습니다! 현재 포인트: ${updatedPoints}`);
-          document.getElementById('points').textContent = updatedPoints;
-        });
+        userRef.update({ points: updatedPoints })
+          .then(() => {
+            alert(포인트가 적립되었습니다! 현재 포인트: ${updatedPoints});
+            document.getElementById('points').textContent = updatedPoints;
+          })
+          .catch(error => {
+            alert('포인트 적립 중 오류 발생: ' + error.message);
+          });
       });
     }
 
     document.getElementById('add-point-btn').addEventListener('click', addPointToUser);
 
-    document.getElementById("logout").addEventListener("click", () => {
-      firebase.auth().signOut()
-        .then(() => {
-          // 로그아웃 플래그 설정
-          localStorage.setItem("justLoggedOut", "true");
-          alert("로그아웃 되었습니다.");
-          window.location.href = "login.html";
-        })
-        .catch(error => {
-          alert("로그아웃 오류: " + error.message);
-        });
+    document.getElementById('logout').addEventListener('click', function() {
+      firebase.auth().signOut().then(() => {
+        alert("로그아웃되었습니다.");
+        window.location.href = 'login.html';
+      }).catch(error => {
+        alert("로그아웃 오류: " + error.message);
+      });
     });
   </script>
 </body>
-</html>
