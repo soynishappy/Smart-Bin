@@ -1,55 +1,37 @@
-// 로그인 상태 확인 및 자동 리디렉션 방지
+// 로그인 페이지 스크립트 (login.js)
+
+// 자동 로그인 상태 확인
 firebase.auth().onAuthStateChanged(user => {
-  const fromLogout = localStorage.getItem("justLoggedOut");
-  if (user && !fromLogout) {
-    // 자동 로그인
-    window.location.href = "main.html";
+  if (user) {
+    // 이미 로그인 상태면 메인 페이지로 이동
+    window.location.href = 'main.html';
   }
 });
 
-// 이메일 자동완성과 비밀번호 기억
-window.addEventListener("DOMContentLoaded", () => {
-  const savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || {};
-  const emailList = document.getElementById("email-list");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-
-  emailInput.addEventListener("input", () => {
-    const email = emailInput.value;
-    if (savedUsers[email]) {
-      passwordInput.value = savedUsers[email];
-    } else {
-      passwordInput.value = "";
-    }
-  });
-});
-
-// 로그인 처리
-document.getElementById("login-form").addEventListener("submit", (e) => {
+// 로그인 폼 제출 처리
+document.getElementById('login-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const autoLogin = document.getElementById("auto-login").checked;
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      alert(`환영합니다, ${userCredential.user.email}님!`);
-      localStorage.removeItem("justLoggedOut");
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-      const savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || {};
-      savedUsers[email] = password;
-      localStorage.setItem("savedUsers", JSON.stringify(savedUsers));
+  // 자동 로그인 체크박스 상태 확인
+  const autoLoginChecked = document.getElementById('auto-login').checked;
 
-      if (autoLogin) {
-        localStorage.setItem("autoLogin", "true");
-      } else {
-        localStorage.removeItem("autoLogin");
-      }
+  // 로그인 상태 유지 방식 설정
+  const persistence = autoLoginChecked
+    ? firebase.auth.Auth.Persistence.LOCAL    // 브라우저 닫아도 로그인 유지
+    : firebase.auth.Auth.Persistence.SESSION; // 탭 닫으면 로그아웃
 
-      window.location.href = "main.html";
+  firebase.auth().setPersistence(persistence)
+    .then(() => {
+      return firebase.auth().signInWithEmailAndPassword(email, password);
     })
-    .catch(error => {
-      // 모든 로그인 오류에 대해 고정된 메시지 출력
-      alert("이메일 또는 비밀번호를 확인해주세요.");
+    .then((userCredential) => {
+      alert(`환영합니다, ${userCredential.user.email}님!`);
+      window.location.href = 'main.html';
+    })
+    .catch((error) => {
+      alert(`로그인 실패: ${error.message}`);
     });
 });
