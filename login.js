@@ -1,13 +1,20 @@
 // 자동 로그인 상태 확인
 firebase.auth().onAuthStateChanged(user => {
-  const justLoggedOut = localStorage.getItem("justLoggedOut");
-  if (user && !justLoggedOut) {
-    window.location.href = "main.html";
+  if (user) {
+    // 이미 로그인 상태면 메인 페이지로 이동
+    window.location.href = 'main.html';
   } else {
-    // 로그아웃 상태에서 다시 들어온 경우, 상태 초기화
-    localStorage.removeItem("justLoggedOut");
+    const justLoggedOut = localStorage.getItem("justLoggedOut");
+    if (justLoggedOut) {
+      // 로그아웃 직후면 알림 없이 justLoggedOut 플래그 제거
+      localStorage.removeItem("justLoggedOut");
+      // 알림 띄우지 않고 대기 (또는 아무 것도 안 함)
+    } else {
+      alert("로그인이 필요합니다.");
+    }
   }
 });
+
 
 // 로그인 폼 제출 처리
 document.getElementById("login-form").addEventListener("submit", (e) => {
