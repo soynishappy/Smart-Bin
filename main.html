@@ -33,7 +33,7 @@
   <script>
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // 로그인 상태 유지
+        // 로그인 된 상태
         const uid = user.uid;
         document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
 
@@ -41,9 +41,8 @@
           const points = snapshot.val() || 0;
           document.getElementById("points").textContent = points;
         });
-
       } else {
-        // 로그인 안 된 상태: 강제 이동
+        // 로그인 안 된 상태 = 비정상 접근 시만 alert 띄움
         alert("로그인이 필요합니다.");
         window.location.href = "login.html";
       }
@@ -80,8 +79,13 @@
     document.getElementById("logout").addEventListener("click", () => {
       firebase.auth().signOut()
         .then(() => {
-          alert("로그아웃 되었습니다.");
-          window.location.href = "login.html";
+          alert("로그아웃 되었습니다.");  // 로그아웃 버튼 누르면 바로 알림
+          window.location.href = "login.html";  // 그리고 로그인 페이지로 이동
         })
         .catch(error => {
-          alert("로그아웃 오류: " + error.
+          alert("로그아웃 오류: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
