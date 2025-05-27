@@ -6,26 +6,27 @@
 </head>
 <body>
   <h2>로그인</h2>
-<form id="login-form">
-  <input type="email" id="email" placeholder="이메일" required />
-  <input type="password" id="password" placeholder="비밀번호" required />
-  <label>
-    <input type="checkbox" id="auto-login" /> 자동 로그인 유지
-  </label>
-  <button type="submit">로그인</button>
-</form>
+  <form id="login-form">
+    <input type="email" id="email" placeholder="이메일" required />
+    <input type="password" id="password" placeholder="비밀번호" required />
+    <label>
+      <input type="checkbox" id="auto-login" /> 자동 로그인 유지
+    </label>
+    <button type="button" id="login-btn">로그인</button> <!-- 여기 id 추가됨 -->
+  </form>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
   <script>
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+      authDomain: "smart-5c491.firebaseapp.com",
+      projectId: "smart-5c491",
+      storageBucket: "smart-5c491.appspot.com",
+      messagingSenderId: "1002873500741",
+      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c"
     };
     firebase.initializeApp(firebaseConfig);
 
@@ -36,7 +37,7 @@
       const autoLoginChecked = document.getElementById("auto-login").checked;
 
       // 자동 로그인 설정 저장
-      if(autoLoginChecked) {
+      if (autoLoginChecked) {
         localStorage.setItem("autoLogin", "true");
         localStorage.setItem("savedEmail", email);
       } else {
@@ -56,19 +57,14 @@
     // 페이지 로드 시 자동 로그인 설정이 되어있으면 이메일 입력 자동완성
     window.addEventListener("load", () => {
       const autoLogin = localStorage.getItem("autoLogin");
-      if(autoLogin === "true") {
+      if (autoLogin === "true") {
         const savedEmail = localStorage.getItem("savedEmail");
-        if(savedEmail) {
+        if (savedEmail) {
           document.getElementById("email").value = savedEmail;
           document.getElementById("auto-login").checked = true;
         }
       }
     });
-
-    // !! 중요한 점 !!
-    // "로그인이 필요합니다" 알림은 main.html에서만 띄우도록 했으므로
-    // login.html에서는 이 알림을 띄우지 않습니다.
   </script>
 </body>
 </html>
-
