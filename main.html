@@ -12,7 +12,6 @@
   <button id="add-point-btn">포인트 적립 (테스트용)</button>
   <button id="logout">로그아웃</button>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -34,7 +33,7 @@
   <script>
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // 로그인 상태
+        // 로그인 상태 유지
         const uid = user.uid;
         document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
 
@@ -43,12 +42,8 @@
           document.getElementById("points").textContent = points;
         });
 
-        if (localStorage.getItem("justLoggedOut") === "true") {
-          alert("로그아웃 되었습니다.");
-          localStorage.removeItem("justLoggedOut");
-        }
       } else {
-        // 로그인 안 된 상태: main.html 직접 접근 시
+        // 로그인 안 된 상태: 강제 이동
         alert("로그인이 필요합니다.");
         window.location.href = "login.html";
       }
@@ -85,13 +80,8 @@
     document.getElementById("logout").addEventListener("click", () => {
       firebase.auth().signOut()
         .then(() => {
-          localStorage.setItem("justLoggedOut", "true");
+          alert("로그아웃 되었습니다.");
           window.location.href = "login.html";
         })
         .catch(error => {
-          alert("로그아웃 오류: " + error.message);
-        });
-    });
-  </script>
-</body>
-</html>
+          alert("로그아웃 오류: " + error.
