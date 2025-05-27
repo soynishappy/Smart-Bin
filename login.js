@@ -1,15 +1,10 @@
 // 자동 로그인 및 로그인 상태 확인
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    window.location.href = 'main.html';
-  } else {
-    const justLoggedOut = localStorage.getItem("justLoggedOut");
-    if (justLoggedOut) {
-      localStorage.removeItem("justLoggedOut");
-    } else {
-      alert("로그인이 필요합니다.");
-    }
+    // 이미 로그인 되어있으면 메인으로 바로 이동
+    window.location.href = "main.html";
   }
+  // else는 아무런 알림 X
 });
 
 // 이메일 자동완성 및 비밀번호 자동 입력
