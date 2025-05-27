@@ -48,7 +48,8 @@ document.getElementById("login-form").addEventListener("submit", (e) => {
 
       window.location.href = "main.html";
     })
-.catch(error => {
-  // 무조건 오류 메시지를 동일하게 띄움
-  alert("이메일 또는 비밀번호를 확인해주세요.");
+    .catch(error => {
+      // 모든 로그인 오류에 대해 고정된 메시지 출력
+      alert("이메일 또는 비밀번호를 확인해주세요.");
+    });
 });
