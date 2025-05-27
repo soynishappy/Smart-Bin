@@ -7,20 +7,20 @@
 <body>
   <h1>로그인</h1>
   <form id="login-form">
-    <input type="email" id="email" placeholder="이메일" required>
-    <input type="password" id="password" placeholder="비밀번호" required>
-  <!-- 여기 체크박스 추가 -->
-  <label>
-    <input type="checkbox" id="auto-login" /> 자동 로그인 유지
-  </label>
-  <button type="submit">로그인</button>
-</form>
+    <input type="email" id="email" placeholder="이메일" required />
+    <input type="password" id="password" placeholder="비밀번호" required />
+    <label>
+      <input type="checkbox" id="auto-login" /> 자동 로그인 유지
+    </label>
+    <button type="submit">로그인</button>
+  </form>
 
   <p>계정이 없나요? <a href="register.html">회원가입하기</a></p>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
@@ -34,19 +34,9 @@
     };
     firebase.initializeApp(firebaseConfig);
   </script>
-    <!-- Firebase 초기화 스크립트 끝난 다음 -->
-  <script>
-    // 자동 로그인 확인 코드
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // 이미 로그인 되어 있으면 메인 페이지로 이동
-        window.location.href = 'main.html';
-      }
-    });
-  </script>
 
-  <!-- 기존 로그인 처리 스크립트 -->
+  <!-- 로그인 처리 -->
   <script src="login.js"></script>
-
 </body>
 </html>
+
