@@ -29,9 +29,12 @@
       databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
     };
     firebase.initializeApp(firebaseConfig);
+  </script>
 
+  <script>
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        // 로그인 상태일 때 사용자 정보 로드
         const uid = user.uid;
         document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
 
@@ -40,17 +43,16 @@
           document.getElementById("points").textContent = points;
         });
 
-      } else {
-        const justLoggedOut = localStorage.getItem("justLoggedOut");
-        if (justLoggedOut) {
-          // 로그아웃 후에는 alert 안 띄우고 바로 로그인페이지로
+        // 로그아웃 후 돌아왔을 때 "로그아웃 되었습니다." 메시지 표시
+        if (localStorage.getItem("justLoggedOut") === "true") {
+          alert("로그아웃 되었습니다.");
           localStorage.removeItem("justLoggedOut");
-          window.location.href = "login.html";
-        } else {
-          // 로그인 안된 상태로 접근시 알림 띄우고 로그인페이지로
-          alert("로그인이 필요합니다.");
-          window.location.href = "login.html";
         }
+
+      } else {
+        // 비로그인 상태로 main 접근 시
+        alert("로그인이 필요합니다.");
+        window.location.href = "login.html";
       }
     });
 
@@ -82,11 +84,11 @@
 
     document.getElementById('add-point-btn').addEventListener('click', addPointToUser);
 
-    document.getElementById('logout').addEventListener('click', () => {
+    document.getElementById("logout").addEventListener("click", () => {
       firebase.auth().signOut()
         .then(() => {
+          // 로그아웃 플래그를 설정해서 main.html에 알림 띄우게 함
           localStorage.setItem("justLoggedOut", "true");
-          alert("로그아웃되었습니다.");  // 로그아웃 알림 여기서 뜨게
           window.location.href = "login.html";
         })
         .catch(error => {
