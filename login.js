@@ -1,12 +1,14 @@
-// 자동 로그인 및 로그인 상태 확인
+// 로그인 상태 확인 및 자동 로그인 처리
 firebase.auth().onAuthStateChanged(user => {
+  const justLoggedOut = localStorage.getItem("justLoggedOut");
+
   if (user) {
     window.location.href = 'main.html';
   } else {
-    const justLoggedOut = localStorage.getItem("justLoggedOut");
-    if (justLoggedOut) {
-      localStorage.removeItem("justLoggedOut");
+    if (justLoggedOut === "true") {
+      localStorage.removeItem("justLoggedOut"); // 로그아웃 후 들어온 경우는 메시지 띄우지 않음
     } else {
+      // 진짜 비로그인 상태일 때만 메시지 출력
       alert("로그인이 필요합니다.");
     }
   }
@@ -26,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
     emailList.appendChild(option);
   });
 
-  // 이메일 입력 시 비밀번호 자동 입력 (input 이벤트 사용)
+  // 이메일 입력 시 비밀번호 자동 입력
   emailInput.addEventListener("input", () => {
     const email = emailInput.value;
     if (savedUsers[email]) {
@@ -66,3 +68,4 @@ document.getElementById("login-form").addEventListener("submit", (e) => {
       alert(`로그인 실패: ${error.message}`);
     });
 });
+
