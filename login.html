@@ -29,6 +29,20 @@
     };
     firebase.initializeApp(firebaseConfig);
   </script>
+    <!-- Firebase 초기화 스크립트 끝난 다음 -->
+  <script>
+    // 자동 로그인 확인 코드
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // 이미 로그인 되어 있으면 메인 페이지로 이동
+        window.location.href = 'main.html';
+      }
+    });
+  </script>
+
+  <!-- 기존 로그인 처리 스크립트 -->
+  <script src="login.js"></script>
+
   <script src="login.js"></script>
 </body>
 </html>
