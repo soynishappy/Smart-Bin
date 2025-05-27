@@ -1,49 +1,22 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyBu9OykAAv8Afwt68O3rImcd4kx0oNJj64",
-  authDomain: "project1-47e8e.firebaseapp.com",
-  databaseURL: "https://project1-47e8e-default-rtdb.firebaseio.com",
-  projectId: "project1-47e8e",
-  storageBucket: "project1-47e8e.firebasestorage.app",
-  messagingSenderId: "1028297928817",
-  appId: "1:1028297928817:web:a74021767ebd432bd52bd0",
-  measurementId: "G-54P8BR7YF6"
-};
+// Firebase SDK를 HTML에 넣었다고 가정하고, 아래 코드에서 auth 객체가 이미 초기화된 상태라고 할게.
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// DOM 요소 가져오기
+const signupForm = document.getElementById('signup-form');
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_ID",
-  appId: "YOUR_APP_ID"
-};
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault(); // 폼 제출 시 새로고침 방지
 
-// 초기화
-firebase.initializeApp(firebaseConfig);
+  const email = signupForm['email'].value;
+  const password = signupForm['password'].value;
 
-const auth = firebase.auth();
-const db = firebase.database();
-
-document.getElementById('registerForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  auth.createUserWithEmailAndPassword(username + "@example.com", password)
+  // Firebase 이메일/비밀번호 회원가입 함수 호출
+  firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      db.ref('users/' + user.uid).set({
-        username: username
-      });
-      alert("가입 완료!");
+      alert('회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
+      // 회원가입 성공 후 로그인 페이지로 이동
+      window.location.href = 'login.html';
     })
     .catch((error) => {
-      alert("에러: " + error.message);
+      alert('회원가입 중 오류가 발생했습니다: ' + error.message);
     });
 });
