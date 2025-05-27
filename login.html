@@ -2,72 +2,43 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>로그인 페이지</title>
+  <title>로그인</title>
 </head>
 <body>
-  <h2>로그인</h2>
+  <h1>로그인</h1>
   <form id="login-form">
     <input type="email" id="email" placeholder="이메일" required />
     <input type="password" id="password" placeholder="비밀번호" required />
+    
+    <!-- 자동 로그인 체크박스 추가 -->
     <label>
-      <input type="checkbox" id="auto-login" /> 자동 로그인 유지
+      <input type="checkbox" id="auto-login" />
+      자동 로그인 유지
     </label>
-    <button type="submit" id="login-btn">로그인</button>
+    
+    <button type="submit">로그인</button>
   </form>
+  <p>계정이 없나요? <a href="register.html">회원가입하기</a></p>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
   <script>
+    // Firebase 설정
     const firebaseConfig = {
       apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
       authDomain: "smart-5c491.firebaseapp.com",
+      databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com",
       projectId: "smart-5c491",
       storageBucket: "smart-5c491.appspot.com",
       messagingSenderId: "1002873500741",
-      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c"
+      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+      measurementId: "G-YMSX9299M2"
     };
     firebase.initializeApp(firebaseConfig);
-
-    // 로그인 폼 제출 이벤트 핸들링
-    document.getElementById("login-form").addEventListener("submit", (event) => {
-      event.preventDefault(); // ❗ 기본 동작(페이지 새로고침) 막기
-
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const autoLoginChecked = document.getElementById("auto-login").checked;
-
-      // 자동 로그인 설정 저장
-      if (autoLoginChecked) {
-        localStorage.setItem("autoLogin", "true");
-        localStorage.setItem("savedEmail", email);
-      } else {
-        localStorage.removeItem("autoLogin");
-        localStorage.removeItem("savedEmail");
-      }
-
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
-          window.location.href = "main.html";
-        })
-        .catch(error => {
-          alert("로그인 실패: " + error.message);
-        });
-    });
-
-    // 자동 로그인 이메일 미리 채우기
-    window.addEventListener("load", () => {
-      const autoLogin = localStorage.getItem("autoLogin");
-      if (autoLogin === "true") {
-        const savedEmail = localStorage.getItem("savedEmail");
-        if (savedEmail) {
-          document.getElementById("email").value = savedEmail;
-          document.getElementById("auto-login").checked = true;
-        }
-      }
-    });
   </script>
+
+  <script src="login.js"></script>
 </body>
 </html>
 
