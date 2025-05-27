@@ -87,7 +87,21 @@
       이미 계정이 있나요? <a href="login.html">로그인</a>
     </div>
   </div>
+  
+const firebaseConfig = {
+  apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+  authDomain: "smart-5c491.firebaseapp.com",
+  projectId: "smart-5c491",
+  storageBucket: "smart-5c491.firebasestorage.app",
+  messagingSenderId: "1002873500741",
+  appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+  measurementId: "G-YMSX9299M2"
+};
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+  
   <script src="register.js"></script>
 </body>
 </html>
