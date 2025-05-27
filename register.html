@@ -88,6 +88,12 @@
     </div>
   </div>
   
+<!-- Firebase SDK 불러오기 -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+
+<script>
 const firebaseConfig = {
   apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
   authDomain: "smart-5c491.firebaseapp.com",
@@ -97,7 +103,10 @@ const firebaseConfig = {
   appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
   measurementId: "G-YMSX9299M2"
 };
-
+  // Firebase 초기화
+  firebase.initializeApp(firebaseConfig);
+</script>
+  
   <script src="register.js"></script>
 </body>
 </html>
