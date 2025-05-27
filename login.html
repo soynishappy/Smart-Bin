@@ -2,65 +2,46 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>로그인</title>
+  <title>로그인 페이지</title>
 </head>
 <body>
-  <h1>로그인</h1>
-  <form id="login-form">
-    <input type="email" id="email" placeholder="이메일" required />
-    <input type="password" id="password" placeholder="비밀번호" required />
-    <label>
-      <input type="checkbox" id="auto-login" /> 자동 로그인 유지
-    </label>
-    <button type="submit">로그인</button>
-  </form>
-  <p>계정이 없나요? <a href="register.html">회원가입하기</a></p>
+  <h2>로그인</h2>
 
+  <input type="email" id="email" placeholder="이메일" /><br /><br />
+  <input type="password" id="password" placeholder="비밀번호" /><br /><br />
+  <button id="login-btn">로그인</button>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
-      authDomain: "smart-5c491.firebaseapp.com",
-      projectId: "smart-5c491",
-      storageBucket: "smart-5c491.appspot.com",
-      messagingSenderId: "1002873500741",
-      appId: "1:1002873500741:web:f3e9e142e00a6352c",
-      measurementId: "G-YMSX9299M2"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 로그인 안 된 상태는 로그인 페이지니까 그냥 두고
-    // 로그인 되어있으면 바로 main.html로 이동
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        window.location.href = "main.html";
-      }
-    });
-
-    document.getElementById("login-form").addEventListener("submit", e => {
-      e.preventDefault();
-
+    // 로그인 함수
+    document.getElementById("login-btn").addEventListener("click", () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      const autoLogin = document.getElementById("auto-login").checked;
-
-      if (autoLogin) {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      } else {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-      }
 
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(userCredential => {
-          alert(`환영합니다, ${userCredential.user.email}님!`);
+          // 로그인 성공
           window.location.href = "main.html";
         })
         .catch(error => {
-          alert(`로그인 실패: ${error.message}`);
+          alert("로그인 실패: " + error.message);
         });
     });
+
+    // 로그인 페이지에서는 "로그인이 필요합니다" alert 띄우지 않음
   </script>
 </body>
 </html>
