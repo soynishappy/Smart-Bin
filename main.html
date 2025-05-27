@@ -18,24 +18,46 @@
 
   <script>
     const firebaseConfig = {
-      // Firebase 설정
-      apiKey: "...",
-      authDomain: "...",
-      // ...
-      databaseURL: "..."
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID",
+      databaseURL: "YOUR_DATABASE_URL"
     };
     firebase.initializeApp(firebaseConfig);
 
+    // onAuthStateChanged 콜백에서 로그아웃 플래그 확인용 함수
+    function justLoggedOut() {
+      return localStorage.getItem("justLoggedOut") === "true";
+    }
+
+    // 플래그 초기화 함수
+    function clearJustLoggedOutFlag() {
+      localStorage.removeItem("justLoggedOut");
+    }
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        // 로그인 상태
+        clearJustLoggedOutFlag(); // 혹시 플래그가 있으면 삭제
         document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
         firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
           const points = snapshot.val() || 0;
           document.getElementById("points").textContent = points;
         });
       } else {
-        // 로그인 안 됐으면 로그인 페이지로 이동할 때 쿼리 붙임
-        window.location.href = "login.html?needLogin=true";
+        // 비로그인 상태
+        if (justLoggedOut()) {
+          // 로그아웃 직후면 "로그인이 필요합니다" alert 안 띄움
+          clearJustLoggedOutFlag();
+          window.location.href = "login.html";
+        } else {
+          // 로그아웃 직후가 아니면 알림 띄우고 이동
+          alert("로그인이 필요합니다.");
+          window.location.href = "login.html";
+        }
       }
     });
 
@@ -59,17 +81,17 @@
     document.getElementById('add-point-btn').addEventListener('click', addPointToUser);
 
     document.getElementById("logout").addEventListener("click", () => {
-      firebase.auth().signOut().then(() => {
-        alert("로그아웃 되었습니다.");
-        window.location.href = "login.html";
-      }).catch(error => {
-        alert("로그아웃 오류: " + error.message);
-      });
+      firebase.auth().signOut()
+        .then(() => {
+          // 로그아웃 플래그 설정
+          localStorage.setItem("justLoggedOut", "true");
+          alert("로그아웃 되었습니다.");
+          window.location.href = "login.html";
+        })
+        .catch(error => {
+          alert("로그아웃 오류: " + error.message);
+        });
     });
-  </script>
-</body>
-</html>
-
   </script>
 </body>
 </html>
