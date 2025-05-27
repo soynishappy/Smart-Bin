@@ -7,8 +7,8 @@
 <body>
   <h1>로그인</h1>
   <form id="login-form">
-    <input type="email" id="email" placeholder="이메일" required>
-    <input type="password" id="password" placeholder="비밀번호" required>
+    <input type="email" id="email" placeholder="이메일" required />
+    <input type="password" id="password" placeholder="비밀번호" required />
     <label>
       <input type="checkbox" id="auto-login" /> 자동 로그인 유지
     </label>
@@ -32,15 +32,14 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 자동 로그인 상태 확인 (로그인 된 경우 메인으로 이동)
+    // 로그인 상태이면 main.html로 이동 (알림 없음)
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         window.location.href = "main.html";
       }
     });
 
-    // 로그인 폼 제출 처리
-    document.getElementById("login-form").addEventListener("submit", (e) => {
+    document.getElementById("login-form").addEventListener("submit", e => {
       e.preventDefault();
 
       const email = document.getElementById("email").value;
