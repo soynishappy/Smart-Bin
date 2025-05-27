@@ -6,14 +6,14 @@
 </head>
 <body>
   <h2>로그인</h2>
-
-  <input type="email" id="email" placeholder="이메일" /><br /><br />
-  <input type="password" id="password" placeholder="비밀번호" /><br /><br />
-
-  <label><input type="checkbox" id="auto-login"> 자동 로그인</label><br /><br />
-
-  <button id="login-btn">로그인</button>
-
+<form id="login-form">
+  <input type="email" id="email" placeholder="이메일" required />
+  <input type="password" id="password" placeholder="비밀번호" required />
+  <label>
+    <input type="checkbox" id="auto-login" /> 자동 로그인 유지
+  </label>
+  <button type="submit">로그인</button>
+</form>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
