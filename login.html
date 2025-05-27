@@ -6,14 +6,19 @@
 </head>
 <body>
   <h1>로그인</h1>
-  <form id="login-form">
-    <input type="email" id="email" placeholder="이메일" required />
-    <input type="password" id="password" placeholder="비밀번호" required />
-    <label>
-      <input type="checkbox" id="auto-login" /> 자동 로그인 유지
-    </label>
-    <button type="submit">로그인</button>
-  </form>
+<form id="login-form">
+  <input type="email" id="email" placeholder="이메일" required list="email-list">
+  <datalist id="email-list"></datalist>
+
+  <input type="password" id="password" placeholder="비밀번호" required>
+  
+  <label>
+    <input type="checkbox" id="auto-login"> 자동 로그인 유지
+  </label>
+
+  <button type="submit">로그인</button>
+</form>
+
 
   <p>계정이 없나요? <a href="register.html">회원가입하기</a></p>
 
