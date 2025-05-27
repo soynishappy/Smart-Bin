@@ -1,4 +1,3 @@
-// 자동 로그인 상태 확인
 // 자동 로그인 및 로그인 상태 확인
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
@@ -17,21 +16,23 @@ firebase.auth().onAuthStateChanged(user => {
 window.addEventListener("DOMContentLoaded", () => {
   const savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || {};
   const emailList = document.getElementById("email-list");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
 
-  // 이메일 목록 채우기
+  // 이메일 목록 생성
   Object.keys(savedUsers).forEach(email => {
     const option = document.createElement("option");
     option.value = email;
     emailList.appendChild(option);
   });
 
-  // 이메일 입력 시 자동으로 비밀번호 채우기
-  document.getElementById("email").addEventListener("change", () => {
-    const email = document.getElementById("email").value;
+  // 이메일 입력 시 비밀번호 자동 입력 (input 이벤트 사용)
+  emailInput.addEventListener("input", () => {
+    const email = emailInput.value;
     if (savedUsers[email]) {
-      document.getElementById("password").value = savedUsers[email];
+      passwordInput.value = savedUsers[email];
     } else {
-      document.getElementById("password").value = "";
+      passwordInput.value = "";
     }
   });
 });
@@ -47,7 +48,7 @@ document.getElementById("login-form").addEventListener("submit", (e) => {
     .then(userCredential => {
       alert(`환영합니다, ${userCredential.user.email}님!`);
 
-      // 저장된 사용자 목록에 현재 이메일+비밀번호 저장
+      // 사용자 정보 저장
       const savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || {};
       savedUsers[email] = password;
       localStorage.setItem("savedUsers", JSON.stringify(savedUsers));
