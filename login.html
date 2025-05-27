@@ -15,22 +15,29 @@
 
   <p>계정이 없나요? <a href="register.html">회원가입</a></p>
 
-<!-- login.html 파일의 끝 부분에 있어야 합니다 -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+<!-- login.html의 하단에 아래처럼 넣어주세요 -->
+<!-- Firebase SDK (compat 버전 사용) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<!-- Firebase 초기화 -->
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
     authDomain: "smart-5c491.firebaseapp.com",
+    databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com",
     projectId: "smart-5c491",
     storageBucket: "smart-5c491.appspot.com",
     messagingSenderId: "1002873500741",
     appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
     measurementId: "G-YMSX9299M2"
   };
+
+  // Firebase 초기화
   firebase.initializeApp(firebaseConfig);
 </script>
 
-<!-- 반드시 Firebase 초기화 후에 login.js를 불러와야 합니다 -->
+<!-- login.js 연결 (반드시 Firebase 초기화 다음에 위치해야 함!) -->
 <script src="login.js"></script>
 
