@@ -1,71 +1,37 @@
-// 로그인 상태 확인 및 자동 로그인 처리
-firebase.auth().onAuthStateChanged(user => {
-  const justLoggedOut = localStorage.getItem("justLoggedOut");
+// 로그인 페이지 스크립트 (login.js)
 
+// 자동 로그인 상태 확인
+firebase.auth().onAuthStateChanged(user => {
   if (user) {
+    // 이미 로그인 상태면 메인 페이지로 이동
     window.location.href = 'main.html';
-  } else {
-    if (justLoggedOut === "true") {
-      localStorage.removeItem("justLoggedOut"); // 로그아웃 후 들어온 경우는 메시지 띄우지 않음
-    } else {
-      // 진짜 비로그인 상태일 때만 메시지 출력
-      alert("로그인이 필요합니다.");
-    }
   }
 });
 
-// 이메일 자동완성 및 비밀번호 자동 입력
-window.addEventListener("DOMContentLoaded", () => {
-  const savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || {};
-  const emailList = document.getElementById("email-list");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-
-  // 이메일 목록 생성
-  Object.keys(savedUsers).forEach(email => {
-    const option = document.createElement("option");
-    option.value = email;
-    emailList.appendChild(option);
-  });
-
-  // 이메일 입력 시 비밀번호 자동 입력
-  emailInput.addEventListener("input", () => {
-    const email = emailInput.value;
-    if (savedUsers[email]) {
-      passwordInput.value = savedUsers[email];
-    } else {
-      passwordInput.value = "";
-    }
-  });
-});
-
-// 로그인 처리
-document.getElementById("login-form").addEventListener("submit", (e) => {
+// 로그인 폼 제출 처리
+document.getElementById('login-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const autoLogin = document.getElementById("auto-login").checked;
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      alert(`환영합니다, ${userCredential.user.email}님!`);
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-      // 사용자 정보 저장
-      const savedUsers = JSON.parse(localStorage.getItem("savedUsers")) || {};
-      savedUsers[email] = password;
-      localStorage.setItem("savedUsers", JSON.stringify(savedUsers));
+  // 자동 로그인 체크박스 상태 확인
+  const autoLoginChecked = document.getElementById('auto-login').checked;
 
-      // 자동 로그인 여부 저장
-      if (autoLogin) {
-        localStorage.setItem("autoLogin", "true");
-      } else {
-        localStorage.removeItem("autoLogin");
-      }
+  // 로그인 상태 유지 방식 설정
+  const persistence = autoLoginChecked
+    ? firebase.auth.Auth.Persistence.LOCAL    // 브라우저 닫아도 로그인 유지
+    : firebase.auth.Auth.Persistence.SESSION; // 탭 닫으면 로그아웃
 
-      window.location.href = "main.html";
+  firebase.auth().setPersistence(persistence)
+    .then(() => {
+      return firebase.auth().signInWithEmailAndPassword(email, password);
     })
-    .catch(error => {
+    .then((userCredential) => {
+      alert(`환영합니다, ${userCredential.user.email}님!`);
+      window.location.href = 'main.html';
+    })
+    .catch((error) => {
       alert(`로그인 실패: ${error.message}`);
     });
 });
-
