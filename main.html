@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>메인 페이지</title>
 </head>
 <body>
@@ -43,9 +43,11 @@
       } else {
         const justLoggedOut = localStorage.getItem("justLoggedOut");
         if (justLoggedOut) {
+          // 로그아웃 후에는 alert 안 띄우고 바로 로그인페이지로
           localStorage.removeItem("justLoggedOut");
           window.location.href = "login.html";
         } else {
+          // 로그인 안된 상태로 접근시 알림 띄우고 로그인페이지로
           alert("로그인이 필요합니다.");
           window.location.href = "login.html";
         }
@@ -84,7 +86,7 @@
       firebase.auth().signOut()
         .then(() => {
           localStorage.setItem("justLoggedOut", "true");
-          alert("로그아웃되었습니다.");
+          alert("로그아웃되었습니다.");  // 로그아웃 알림 여기서 뜨게
           window.location.href = "login.html";
         })
         .catch(error => {
