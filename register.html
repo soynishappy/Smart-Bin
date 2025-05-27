@@ -2,111 +2,93 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>회원가입</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 320px;
-    }
-    h2 {
+      font-family: 'Arial', sans-serif;
+      background-color: #f2f2f2;
       text-align: center;
-      margin-bottom: 20px;
+      padding: 50px;
+    }
+
+    h1 {
       color: #333;
     }
-    label {
+
+    form {
+      background-color: #fff;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
       display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #555;
-    }
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
+      margin: 10px auto;
       padding: 10px;
-      margin-bottom: 18px;
+      width: 250px;
       border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
-      box-sizing: border-box;
+      border-radius: 5px;
     }
+
     button {
-      width: 100%;
+      padding: 10px 20px;
+      border: none;
       background-color: #4CAF50;
       color: white;
-      font-size: 18px;
-      padding: 12px;
-      border: none;
+      font-size: 16px;
       border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
+
     button:hover {
       background-color: #45a049;
     }
-    .login-link {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-      color: #666;
+
+    p {
+      margin-top: 20px;
     }
-    .login-link a {
+
+    a {
       color: #4CAF50;
       text-decoration: none;
-    }
-    .login-link a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>회원가입</h2>
-    <form id="signup-form">
-      <label for="email">이메일</label>
-      <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required />
-      
-      <label for="password">비밀번호</label>
-      <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required minlength="6" />
-      
-      <button type="submit">회원가입</button>
-    </form>
-    <div class="login-link">
-      이미 계정이 있나요? <a href="login.html">로그인</a>
-    </div>
-  </div>
+  <h1>회원가입</h1>
   
-<!-- Firebase SDK 불러오기 -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+  <form id="register-form">
+    <input type="email" id="email" placeholder="이메일" required>
+    <input type="password" id="password" placeholder="비밀번호" required>
+    <button type="submit">회원가입</button>
+  </form>
 
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
-  authDomain: "smart-5c491.firebaseapp.com",
-  projectId: "smart-5c491",
-  storageBucket: "smart-5c491.firebasestorage.app",
-  messagingSenderId: "1002873500741",
-  appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
-  measurementId: "G-YMSX9299M2"
-};
-  // Firebase 초기화
-  firebase.initializeApp(firebaseConfig);
-</script>
-  
+  <p>이미 계정이 있나요? <a href="login.html">로그인하기</a></p>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+
+  <!-- Firebase 설정 -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+      authDomain: "smart-5c491.firebaseapp.com",
+      projectId: "smart-5c491",
+      storageBucket: "smart-5c491.appspot.com",
+      messagingSenderId: "1002873500741",
+      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+      measurementId: "G-YMSX9299M2",
+      databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- register.js 연결 -->
   <script src="register.js"></script>
 </body>
 </html>
