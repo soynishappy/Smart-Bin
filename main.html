@@ -12,11 +12,13 @@
   <button id="add-point-btn">포인트 적립 (테스트용)</button>
   <button id="logout">로그아웃</button>
 
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <script>
+    // Firebase 설정
     const firebaseConfig = {
       apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
       authDomain: "smart-5c491.firebaseapp.com",
@@ -31,37 +33,34 @@
   </script>
 
   <script>
+    // 사용자 로그인 상태 확인
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // 로그인 된 상태
-        const uid = user.uid;
+        // 로그인 되어 있으면 사용자 정보 표시
         document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
 
-        firebase.database().ref("users/" + uid + "/points").once("value").then(snapshot => {
+        // 포인트 불러오기
+        firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
           const points = snapshot.val() || 0;
           document.getElementById("points").textContent = points;
         });
       } else {
-        // 로그인 안 된 상태 = 비정상 접근 시만 alert 띄움
+        // 로그인 안 되어 있으면 로그인 필요 알림 후 login.html로 이동
         alert("로그인이 필요합니다.");
         window.location.href = "login.html";
       }
     });
 
+    // 포인트 적립 함수
     function addPointToUser() {
       const user = firebase.auth().currentUser;
       if (!user) {
         alert('로그인 상태가 아닙니다!');
         return;
       }
-      const uid = user.uid;
-      const userRef = firebase.database().ref('users/' + uid);
-
+      const userRef = firebase.database().ref('users/' + user.uid);
       userRef.once('value').then(snapshot => {
-        let currentPoints = 0;
-        if (snapshot.exists() && snapshot.val().points) {
-          currentPoints = snapshot.val().points;
-        }
+        let currentPoints = snapshot.val()?.points || 0;
         const updatedPoints = currentPoints + 1;
         userRef.update({ points: updatedPoints })
           .then(() => {
@@ -74,13 +73,14 @@
       });
     }
 
+    // 이벤트 리스너 등록
     document.getElementById('add-point-btn').addEventListener('click', addPointToUser);
 
     document.getElementById("logout").addEventListener("click", () => {
       firebase.auth().signOut()
         .then(() => {
-          alert("로그아웃 되었습니다.");  // 로그아웃 버튼 누르면 바로 알림
-          window.location.href = "login.html";  // 그리고 로그인 페이지로 이동
+          alert("로그아웃 되었습니다.");
+          window.location.href = "login.html";
         })
         .catch(error => {
           alert("로그아웃 오류: " + error.message);
