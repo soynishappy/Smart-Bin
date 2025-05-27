@@ -21,7 +21,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
-  <!-- Firebase 설정 -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
@@ -34,16 +33,8 @@
       measurementId: "G-YMSX9299M2"
     };
     firebase.initializeApp(firebaseConfig);
-
-    // 자동 로그인 확인
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        window.location.href = 'main.html';
-      }
-    });
   </script>
 
-  <!-- 로그인 처리 로직 -->
   <script src="login.js"></script>
 </body>
 </html>
