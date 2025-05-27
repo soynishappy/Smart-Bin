@@ -12,7 +12,7 @@
     <label>
       <input type="checkbox" id="auto-login" /> 자동 로그인 유지
     </label>
-    <button type="button" id="login-btn">로그인</button> <!-- 여기 id 추가됨 -->
+    <button type="submit" id="login-btn">로그인</button>
   </form>
 
   <!-- Firebase SDK -->
@@ -30,8 +30,10 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 로그인 버튼 클릭 이벤트
-    document.getElementById("login-btn").addEventListener("click", () => {
+    // 로그인 폼 제출 이벤트 핸들링
+    document.getElementById("login-form").addEventListener("submit", (event) => {
+      event.preventDefault(); // ❗ 기본 동작(페이지 새로고침) 막기
+
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const autoLoginChecked = document.getElementById("auto-login").checked;
@@ -54,7 +56,7 @@
         });
     });
 
-    // 페이지 로드 시 자동 로그인 설정이 되어있으면 이메일 입력 자동완성
+    // 자동 로그인 이메일 미리 채우기
     window.addEventListener("load", () => {
       const autoLogin = localStorage.getItem("autoLogin");
       if (autoLogin === "true") {
@@ -68,3 +70,4 @@
   </script>
 </body>
 </html>
+
