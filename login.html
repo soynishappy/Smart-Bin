@@ -7,8 +7,8 @@
 <body>
   <h1>로그인</h1>
   <form id="login-form">
-    <input type="email" id="email" placeholder="이메일" required />
-    <input type="password" id="password" placeholder="비밀번호" required />
+    <input type="email" id="email" placeholder="이메일" required>
+    <input type="password" id="password" placeholder="비밀번호" required>
     <label>
       <input type="checkbox" id="auto-login" /> 자동 로그인 유지
     </label>
@@ -29,59 +29,59 @@
       storageBucket: "smart-5c491.appspot.com",
       messagingSenderId: "1002873500741",
       appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
-      measurementId: "G-YMSX9299M2",
+      measurementId: "G-YMSX9299M2"
     };
     firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        // 로그인 상태면 메인으로 이동
-        window.location.href = "main.html";
+    window.addEventListener('DOMContentLoaded', () => {
+      const justLoggedOut = localStorage.getItem("justLoggedOut");
+
+      if (justLoggedOut) {
+        // 로그아웃 직후, 알림 없이 플래그 삭제하고 로그인폼만 보여줌
+        localStorage.removeItem("justLoggedOut");
       } else {
-        // 로그아웃 후 돌아온 경우 플래그 확인
-        const justLoggedOut = localStorage.getItem("justLoggedOut");
-        if (justLoggedOut) {
-          // 플래그 삭제하고 아무 알림 없이 로그인 화면 유지
-          localStorage.removeItem("justLoggedOut");
-          // 여기서 아무 alert도 없음! 그냥 로그인 폼 보여줌
-        } else {
-          // 플래그 없으면 "로그인이 필요합니다" 띄우고 로그인 화면 유지
-          alert("로그인이 필요합니다.");
-          // 필요하면 로그인 화면 유지(이미 로그인 페이지니까 별도 이동 필요 없음)
-        }
+        // 비정상 접근 시 알림 띄우기
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            window.location.href = 'main.html';
+          } else {
+            alert("로그인이 필요합니다.");
+          }
+        });
       }
     });
 
-    document.getElementById("login-form").addEventListener("submit", (e) => {
+    // 로그인 폼 제출 처리
+    document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const autoLoginChecked = document.getElementById("auto-login").checked;
 
-      firebase.auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          if (autoLoginChecked) {
-            localStorage.setItem("savedEmail", email);
-          } else {
-            localStorage.removeItem("savedEmail");
-          }
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const autoLogin = document.getElementById('auto-login').checked;
+
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
           alert(`환영합니다, ${userCredential.user.email}님!`);
-          window.location.href = "main.html";
+          if (autoLogin) {
+            localStorage.setItem('autoLoginEmail', email);
+          } else {
+            localStorage.removeItem('autoLoginEmail');
+          }
+          window.location.href = 'main.html';
         })
-        .catch((error) => {
-          alert("로그인 실패: " + error.message);
+        .catch(error => {
+          alert(`로그인 실패: ${error.message}`);
         });
     });
 
-    window.addEventListener("load", () => {
-      const savedEmail = localStorage.getItem("savedEmail");
+    // 자동 로그인용 이메일 입력값 자동 채우기
+    window.addEventListener('load', () => {
+      const savedEmail = localStorage.getItem('autoLoginEmail');
       if (savedEmail) {
-        document.getElementById("email").value = savedEmail;
-        document.getElementById("auto-login").checked = true;
+        document.getElementById('email').value = savedEmail;
+        document.getElementById('auto-login').checked = true;
       }
     });
   </script>
 </body>
 </html>
-
