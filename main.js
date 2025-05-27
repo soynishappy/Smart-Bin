@@ -1,13 +1,22 @@
-// main.js
-
 // 로그인한 사용자 정보 가져오기
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    // 로그인된 사용자 정보 표시
-    const userInfo = `이메일: ${user.email}`;
-    document.getElementById('user-info').textContent = userInfo;
+    const uid = user.uid;
+    const email = user.email;
+
+    // Realtime Database에서 포인트 불러오기
+    firebase.database().ref('users/' + uid).once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        const points = data ? data.points : 0;
+        const userInfo = `이메일: ${email}, 포인트: ${points}`;
+        document.getElementById('user-info').textContent = userInfo;
+      })
+      .catch((error) => {
+        document.getElementById('user-info').textContent = `이메일: ${email} (포인트 불러오기 실패)`;
+        console.error('포인트 로딩 오류:', error);
+      });
   } else {
-    // 로그인 안 된 경우 로그인 페이지로 이동
     alert("로그인이 필요합니다.");
     window.location.href = 'login.html';
   }
