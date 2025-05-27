@@ -49,7 +49,11 @@ document.getElementById("login-form").addEventListener("submit", (e) => {
       window.location.href = "main.html";
     })
 .catch(error => {
-  if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+  if (
+    error.code === "auth/user-not-found" ||
+    error.code === "auth/wrong-password" ||
+    error.code === "auth/invalid-login-credentials"
+  ) {
     alert("이메일 또는 비밀번호를 확인해주세요.");
   } else {
     alert(`로그인 실패: ${error.message}`);
