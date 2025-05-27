@@ -9,6 +9,9 @@
 
   <input type="email" id="email" placeholder="이메일" /><br /><br />
   <input type="password" id="password" placeholder="비밀번호" /><br /><br />
+
+  <label><input type="checkbox" id="auto-login"> 자동 로그인</label><br /><br />
+
   <button id="login-btn">로그인</button>
 
   <!-- Firebase SDK -->
@@ -26,14 +29,23 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 로그인 함수
+    // 로그인 버튼 클릭 이벤트
     document.getElementById("login-btn").addEventListener("click", () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+      const autoLoginChecked = document.getElementById("auto-login").checked;
+
+      // 자동 로그인 설정 저장
+      if(autoLoginChecked) {
+        localStorage.setItem("autoLogin", "true");
+        localStorage.setItem("savedEmail", email);
+      } else {
+        localStorage.removeItem("autoLogin");
+        localStorage.removeItem("savedEmail");
+      }
 
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(userCredential => {
-          // 로그인 성공
           window.location.href = "main.html";
         })
         .catch(error => {
@@ -41,7 +53,22 @@
         });
     });
 
-    // 로그인 페이지에서는 "로그인이 필요합니다" alert 띄우지 않음
+    // 페이지 로드 시 자동 로그인 설정이 되어있으면 이메일 입력 자동완성
+    window.addEventListener("load", () => {
+      const autoLogin = localStorage.getItem("autoLogin");
+      if(autoLogin === "true") {
+        const savedEmail = localStorage.getItem("savedEmail");
+        if(savedEmail) {
+          document.getElementById("email").value = savedEmail;
+          document.getElementById("auto-login").checked = true;
+        }
+      }
+    });
+
+    // !! 중요한 점 !!
+    // "로그인이 필요합니다" 알림은 main.html에서만 띄우도록 했으므로
+    // login.html에서는 이 알림을 띄우지 않습니다.
   </script>
 </body>
 </html>
+
