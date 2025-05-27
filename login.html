@@ -16,7 +16,6 @@
   </form>
   <p>계정이 없나요? <a href="register.html">회원가입하기</a></p>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
@@ -27,12 +26,13 @@
       projectId: "smart-5c491",
       storageBucket: "smart-5c491.appspot.com",
       messagingSenderId: "1002873500741",
-      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+      appId: "1:1002873500741:web:f3e9e142e00a6352c",
       measurementId: "G-YMSX9299M2"
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 로그인 상태이면 main.html로 이동 (알림 없음)
+    // 로그인 안 된 상태는 로그인 페이지니까 그냥 두고
+    // 로그인 되어있으면 바로 main.html로 이동
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         window.location.href = "main.html";
