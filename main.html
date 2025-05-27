@@ -1,0 +1,33 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>메인 페이지</title>
+</head>
+<body>
+  <h2>환영합니다!</h2>
+  <p id="user-info">사용자 정보를 불러오는 중...</p>
+  <button id="logout">로그아웃</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+
+  <script>
+    // Firebase 설정 (register/login.html과 동일하게 복사해서 넣기)
+    const firebaseConfig = {
+      apiKey: "여기에_복사한_apiKey",
+      authDomain: "여기에_복사한_authDomain",
+      projectId: "여기에_복사한_projectId",
+      storageBucket: "여기에_복사한_storageBucket",
+      messagingSenderId: "여기에_복사한_messagingSenderId",
+      appId: "여기에_복사한_appId"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- main.js 연결 -->
+  <script src="main.js"></script>
+</body>
+</html>
