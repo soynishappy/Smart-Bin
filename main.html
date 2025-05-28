@@ -48,8 +48,7 @@
     }
 
     input[type="date"] {
-      color: #333 !important;
-      background-color: #fff;
+      color: #333;
       font-size: 16px;
     }
 
@@ -78,7 +77,7 @@
     .chart-container {
       width: 100%;
       max-width: 420px;
-      height: 280px;
+      height: 300px;
       position: relative;
       margin-bottom: 20px;
     }
@@ -96,6 +95,7 @@
   <p>포인트: <span id="points">0</span></p>
 
   <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
+
   <div class="chart-container">
     <canvas id="dailyChart"></canvas>
   </div>
@@ -119,7 +119,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-  <!-- 외부 메인 스크립트 -->
+  <!-- main.js 연결 -->
   <script src="main.js"></script>
 </body>
 </html>
