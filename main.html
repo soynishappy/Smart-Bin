@@ -62,9 +62,16 @@
     }
     .chart-container {
       width: 90%;
-      max-width: 500px;
+      max-width: 400px;
       height: 300px;
       position: relative;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    #dailyChart {
+      width: 100% !important;
+      height: 100% !important;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -203,20 +210,27 @@
               backgroundColor: 'rgba(75, 192, 192, 0.6)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1,
-              barThickness: 20, // 막대 너비 고정
+              barThickness: 20,
               maxBarThickness: 20
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            indexAxis: 'x',
             scales: {
               y: {
                 beginAtZero: true,
                 title: { display: true, text: 'kg CO₂' }
               },
               x: {
-                title: { display: true, text: '날짜' }
+                title: { display: true, text: '날짜' },
+                ticks: { align: 'start' }
+              }
+            },
+            plugins: {
+              legend: {
+                align: 'start'
               }
             }
           }
