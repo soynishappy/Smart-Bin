@@ -20,8 +20,8 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
       alert('회원가입 성공! 로그인 페이지로 이동합니다.');
       window.location.href = 'login.html';
     })
-  .catch((error) => {
-  let errorMsg;
+.catch((error) => {
+  let errorMsg = '';
 
   switch (error.code) {
     case 'auth/email-already-in-use':
