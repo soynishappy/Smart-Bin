@@ -1,6 +1,6 @@
 // register.js
 
-document.getElementById('register-form').addEventListener('submit', function (e) {
+document.getElementById('registerForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
   const email = document.getElementById('email').value;
