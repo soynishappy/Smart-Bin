@@ -1,3 +1,6 @@
+main.js
+
+
 // Firebase 구성 및 초기화
 const firebaseConfig = {
   apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
@@ -33,10 +36,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     fetchUserTrashLogs(uid);
 
   } else {
-    // 아무 동작 안 함 (로그아웃 후에도 "로그인이 필요합니다" 알림 제거)
-    if (!location.pathname.includes("login.html")) {
-      window.location.href = 'login.html';
-    }
+    alert("로그인이 필요합니다.");
+    window.location.href = 'login.html';
   }
 });
 
