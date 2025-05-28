@@ -38,7 +38,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
-// 로그아웃 기능
+// 로그아웃 및 버튼 이벤트 등록
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById('logout')?.addEventListener('click', function() {
     firebase.auth().signOut().then(() => {
@@ -80,6 +80,38 @@ window.addEventListener("DOMContentLoaded", () => {
         date: new Date().toISOString().slice(0, 10)
       }).then(() => {
         alert("✅ 쓰레기 데이터가 추가되었습니다!");
+        location.reload();
+      }).catch((err) => {
+        alert("❌ Firebase 쓰기 실패: " + err.message);
+      });
+    } else {
+      alert("로그인이 필요합니다.");
+    }
+  });
+
+  // 입력한 날짜로 쓰레기 추가 버튼
+  document.getElementById("add-custom-trash")?.addEventListener("click", () => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const uid = user.uid;
+      const date = document.getElementById("custom-date").value;
+      const type = document.getElementById("trash-type").value;
+      const count = parseInt(document.getElementById("item-count").value);
+
+      if (!date || isNaN(count) || count <= 0) {
+        alert("날짜와 수량을 정확히 입력해 주세요.");
+        return;
+      }
+
+      const weightPerItem = 10; // 가정값
+      const totalWeight = count * weightPerItem;
+
+      firebase.database().ref('trash_logs/' + uid).push({
+        type: type,
+        weight: totalWeight,
+        date: date
+      }).then(() => {
+        alert("✅ 입력한 날짜로 쓰레기 데이터가 추가되었습니다!");
         location.reload();
       }).catch((err) => {
         alert("❌ Firebase 쓰기 실패: " + err.message);
@@ -207,6 +239,7 @@ function renderDailyChart(dailyData) {
   chartCanvas.parentElement.style.padding = '0';
   chartCanvas.parentElement.style.boxSizing = 'border-box';
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
