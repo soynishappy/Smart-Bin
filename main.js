@@ -9,8 +9,9 @@ firebase.auth().onAuthStateChanged(function(user) {
       .then((snapshot) => {
         const data = snapshot.val();
         const points = data ? data.points : 0;
-        const userInfo = `이메일: ${email}, 포인트: ${points}`;
+        const userInfo = `이메일: ${email}`;
         document.getElementById('user-info').textContent = userInfo;
+        document.getElementById('points').textContent = points;
       })
       .catch((error) => {
         document.getElementById('user-info').textContent = `이메일: ${email} (포인트 불러오기 실패)`;
@@ -73,7 +74,7 @@ function fetchUserTrashLogs(userId) {
 }
 
 function renderDailyChart(dailyData) {
-  const sortedDates = Object.keys(dailyData).sort();
+  const sortedDates = Object.keys(dailyData).sort().slice(-7);
   const values = sortedDates.map(date => dailyData[date].toFixed(2));
 
   const chartCanvas = document.getElementById("dailyChart");
@@ -85,7 +86,7 @@ function renderDailyChart(dailyData) {
   }
 
   window.dailyChartInstance = new Chart(chartCanvas, {
-    type: 'bar', // 막대 그래프로 변경
+    type: 'bar',
     data: {
       labels: sortedDates,
       datasets: [{
@@ -93,23 +94,68 @@ function renderDailyChart(dailyData) {
         data: values,
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1
+        borderWidth: 1,
+        barThickness: 24,
+        categoryPercentage: 0.8,
+        barPercentage: 0.9
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      indexAxis: 'x',
+      layout: {
+        padding: { left: 0, right: 0 }
+      },
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: 'kg CO₂' }
+          max: 5.0,
+          title: { display: true, text: 'kg CO₂' },
+          ticks: {
+            font: {
+              size: 16
+            }
+          }
         },
         x: {
-          title: { display: true, text: '날짜' }
+          title: {
+            display: true,
+            text: '날짜',
+            align: 'end'
+          },
+          ticks: {
+            align: 'center',
+            anchor: 'center',
+            maxRotation: 45,
+            minRotation: 45,
+            font: {
+              size: 16
+            }
+          },
+          offset: true
+        }
+      },
+      plugins: {
+        legend: {
+          align: 'start',
+          labels: {
+            font: {
+              size: 16
+            }
+          }
         }
       }
     }
   });
+
+  // 모바일 및 데스크탑에 대응하는 반응형 스타일 적용
+  chartCanvas.parentElement.style.width = '100%';
+  chartCanvas.parentElement.style.maxWidth = '360px';
+  chartCanvas.parentElement.style.margin = '0 auto';
+  chartCanvas.parentElement.style.height = '300px';
+  chartCanvas.parentElement.style.padding = '0';
+  chartCanvas.parentElement.style.boxSizing = 'border-box';
 }
 
 document.addEventListener("DOMContentLoaded", () => {
