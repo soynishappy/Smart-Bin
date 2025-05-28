@@ -1,6 +1,3 @@
-main.js
-
-
 // Firebase 구성 및 초기화
 const firebaseConfig = {
   apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
