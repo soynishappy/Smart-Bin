@@ -90,21 +90,22 @@ button:hover {
     firebase.initializeApp(firebaseConfig);
 
     // 로그인 상태 확인
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
-        firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
-          const points = snapshot.val() || 0;
-          document.getElementById("points").textContent = points;
-        });
-      } else {
-        const fromLogout = localStorage.getItem("justLoggedOut");
-        if (!fromLogout) {
-          alert("로그인이 필요합니다.");
-        }
-        window.location.href = "login.html";
-      }
+   firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    localStorage.removeItem("justLoggedOut");  // 로그인 시점에 제거
+    document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
+    firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
+      const points = snapshot.val() || 0;
+      document.getElementById("points").textContent = points;
     });
+  } else {
+    const fromLogout = localStorage.getItem("justLoggedOut");
+    if (!fromLogout) {
+      alert("로그인이 필요합니다.");
+    }
+    window.location.href = "login.html";
+  }
+});
 
     // 포인트 적립
     document.getElementById('add-point-btn').addEventListener('click', () => {
