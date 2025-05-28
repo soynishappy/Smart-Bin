@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>메인 페이지</title>
-<style>
+  <style>
     * {
       box-sizing: border-box;
     }
@@ -95,21 +95,22 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h2>환영합니다!</h2>
-  <p id="user-info">사용자 정보를 불러오는 중...</p>
-  <p>포인트: <span id="points">0</span></p>
-  <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
-  
-  <div class="chart-container">
-    <canvas id="dailyChart"></canvas>
-    
+  <div class="container">
+    <h2>환영합니다!</h2>
+    <p id="user-info">사용자 정보를 불러오는 중...</p>
+    <p>포인트: <span id="points">0</span></p>
+
+    <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
+    <div class="chart-container">
+      <canvas id="dailyChart"></canvas>
+    </div>
+
+    <div class="button-row">
+      <button id="add-point-btn">포인트 적립 (테스트용)</button>
+      <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
+    </div>
+    <button id="logout">로그아웃</button>
   </div>
-  <div class="button-row">
-    
-    <button id="add-point-btn">포인트 적립 (테스트용)</button>
-    <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
-  </div>
-  <button id="logout">로그아웃</button>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
