@@ -9,12 +9,11 @@ firebase.auth().onAuthStateChanged(function(user) {
       .then((snapshot) => {
         const data = snapshot.val();
         const points = data ? data.points : 0;
-        const userInfo = `이메일: ${email}`;
-        document.getElementById('user-info').textContent = userInfo;
+        document.getElementById('user-info').textContent = `환영합니다, ${email}님!`;
         document.getElementById('points').textContent = points;
       })
       .catch((error) => {
-        document.getElementById('user-info').textContent = `이메일: ${email} (포인트 불러오기 실패)`;
+        document.getElementById('user-info').textContent = `환영합니다, ${email}님! (포인트 불러오기 실패)`;
         console.error('포인트 로딩 오류:', error);
       });
 
