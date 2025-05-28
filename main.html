@@ -3,37 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <title>메인 페이지</title>
-  <style>
+<style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
+
     body {
       margin: 0;
       padding: 0;
       font-family: 'Arial', sans-serif;
       background-color: #f2f2f2;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
     }
-    h1 {
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-    form {
+
+    .container {
       background-color: white;
       padding: 30px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
       width: 90%;
       max-width: 400px;
       display: flex;
       flex-direction: column;
+      align-items: stretch;
     }
+
+    h1, h2, h3 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+    }
+
     input {
       margin-bottom: 15px;
       padding: 16px;
@@ -41,6 +48,7 @@
       border: 1px solid #ccc;
       border-radius: 8px;
     }
+
     button {
       background-color: #007BFF;
       color: white;
@@ -51,28 +59,33 @@
       cursor: pointer;
       margin-bottom: 10px;
     }
+
     button:hover {
       background-color: #0056b3;
     }
+
     .link-btn {
       background-color: #6c757d;
     }
+
     .link-btn:hover {
       background-color: #495057;
     }
+
     .chart-container {
-      width: 90%;
-      max-width: 400px;
+      width: 100%;
       height: 300px;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }
+
     #dailyChart {
       width: 100% !important;
       height: 100% !important;
     }
+
     .button-row {
       display: flex;
       gap: 10px;
@@ -85,13 +98,14 @@
   <h2>환영합니다!</h2>
   <p id="user-info">사용자 정보를 불러오는 중...</p>
   <p>포인트: <span id="points">0</span></p>
-
   <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
+  
   <div class="chart-container">
     <canvas id="dailyChart"></canvas>
+    
   </div>
-
   <div class="button-row">
+    
     <button id="add-point-btn">포인트 적립 (테스트용)</button>
     <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
   </div>
@@ -102,8 +116,150 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-  <script>
-    // unchanged JavaScript remains as-is
+   <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+        authDomain: "smart-5c491.firebaseapp.com",
+        projectId: "smart-5c491",
+        storageBucket: "smart-5c491.appspot.com",
+        messagingSenderId: "1002873500741",
+        appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+        measurementId: "G-YMSX9299M2",
+        databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          localStorage.removeItem("justLoggedOut");
+          document.getElementById("user-info").textContent = 환영합니다, ${user.email}님!;
+          firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
+            const points = snapshot.val() || 0;
+            document.getElementById("points").textContent = points;
+          });
+          fetchUserTrashLogs(user.uid);
+        } else {
+          const fromLogout = localStorage.getItem("justLoggedOut");
+          if (!fromLogout) alert("로그인이 필요합니다.");
+          window.location.href = "login.html";
+        }
+      });
+
+      document.getElementById('add-point-btn').addEventListener('click', () => {
+        const user = firebase.auth().currentUser;
+        if (!user) return alert("로그인이 필요합니다.");
+
+        const userRef = firebase.database().ref('users/' + user.uid);
+        userRef.once('value').then(snapshot => {
+          const currentPoints = snapshot.val()?.points || 0;
+          const newPoints = currentPoints + 1;
+          userRef.update({ points: newPoints });
+          alert(포인트 적립 완료! 현재 포인트: ${newPoints});
+          document.getElementById("points").textContent = newPoints;
+        });
+      });
+
+      document.getElementById("logout").addEventListener("click", () => {
+        firebase.auth().signOut().then(() => {
+          localStorage.setItem("justLoggedOut", "true");
+          alert("로그아웃 되었습니다.");
+          window.location.href = "login.html";
+        });
+      });
+
+      document.getElementById("test-add-trash").addEventListener("click", () => {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const uid = user.uid;
+          firebase.database().ref('trash_logs/' + uid).push({
+            type: "plastic",
+            weight: 100,
+            date: new Date().toISOString().slice(0, 10)
+          }).then(() => {
+            alert("✅ 쓰레기 데이터가 추가되었습니다!");
+            location.reload();
+          }).catch((err) => {
+            alert("❌ Firebase 쓰기 실패: " + err.message);
+          });
+        } else {
+          alert("로그인이 필요합니다.");
+        }
+      });
+
+      function fetchUserTrashLogs(userId) {
+        const ref = firebase.database().ref("trash_logs/" + userId);
+        const CO2_FACTORS = {
+          plastic: 0.0025,
+          can: 0.0092,
+          glass: 0.0014,
+          paper: 0.0017
+        };
+
+        const dailyTotals = {};
+        let totalCO2 = 0;
+
+        ref.once("value").then(snapshot => {
+          snapshot.forEach(child => {
+            const { type, weight, date } = child.val();
+            const co2 = (CO2_FACTORS[type] || 0) * weight;
+            totalCO2 += co2;
+            dailyTotals[date] = (dailyTotals[date] || 0) + co2;
+          });
+
+          const totalSpan = document.getElementById("total-carbon");
+          if (totalSpan) totalSpan.textContent = totalCO2.toFixed(2);
+
+          renderDailyChart(dailyTotals);
+        });
+      }
+
+      function renderDailyChart(dailyData) {
+        const sortedDates = Object.keys(dailyData).sort();
+        const values = sortedDates.map(date => dailyData[date].toFixed(2));
+
+        const chartCanvas = document.getElementById("dailyChart");
+        if (!chartCanvas) return;
+
+        new Chart(chartCanvas, {
+          type: 'bar',
+          data: {
+            labels: sortedDates,
+            datasets: [{
+              label: '일별 탄소 절감량 (kg CO₂)',
+              data: values,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+              barThickness: 10,
+              maxBarThickness: 10,
+              categoryPercentage: 0.5,
+              barPercentage: 0.5
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'x',
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: { display: true, text: 'kg CO₂' }
+              },
+              x: {
+                title: { display: true, text: '날짜' },
+                ticks: { align: 'start' }
+              }
+            },
+            plugins: {
+              legend: {
+                align: 'start'
+              }
+            }
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
