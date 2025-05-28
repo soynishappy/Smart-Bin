@@ -295,12 +295,12 @@
           }
         });
 
-        // 모바일 화면 대응 CSS 적용
-        chartCanvas.parentElement.style.width = '100vw';
-        chartCanvas.parentElement.style.maxWidth = '100vw';
+        // 모바일 및 데스크탑에 대응하는 반응형 스타일 적용
+        chartCanvas.parentElement.style.width = '90%';
+        chartCanvas.parentElement.style.maxWidth = '400px';
         chartCanvas.parentElement.style.margin = '0 auto';
         chartCanvas.parentElement.style.height = '280px';
-        chartCanvas.parentElement.style.padding = '0 10px';
+        chartCanvas.parentElement.style.padding = '0';
         chartCanvas.parentElement.style.boxSizing = 'border-box';
       }
     });
