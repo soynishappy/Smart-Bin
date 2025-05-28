@@ -40,6 +40,9 @@
       width: 90%;
       max-width: 400px;
     }
+    input[type="date"] {
+      font-size: 16px;
+    }
 
     button {
       background-color: #007BFF;
@@ -228,7 +231,7 @@
           const totalSpan = document.getElementById("total-carbon");
           if (totalSpan) totalSpan.textContent = totalCO2.toFixed(2);
 
-          renderDailyChart(dailyTotals);
+        renderDailyChart(dailyTotals);
         });
       }
 
@@ -255,8 +258,8 @@
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1,
               barThickness: 20,
-              categoryPercentage: 0.5,
-              barPercentage: 1.0
+              categoryPercentage: 0.6,
+              barPercentage: 0.9
             }]
           },
           options: {
@@ -282,7 +285,10 @@
                   align: 'center',
                   anchor: 'center',
                   maxRotation: 45,
-                  minRotation: 45
+                  minRotation: 45,
+                  font: {
+                    size: 14
+                  }
                 },
                 offset: true
               }
@@ -296,13 +302,13 @@
         });
 
         // 모바일 및 데스크탑에 대응하는 반응형 스타일 적용
-        chartCanvas.parentElement.style.width = '90%';
-        chartCanvas.parentElement.style.maxWidth = '400px';
+        chartCanvas.parentElement.style.width = '100%';
+        chartCanvas.parentElement.style.maxWidth = '100%';
         chartCanvas.parentElement.style.margin = '0 auto';
-        chartCanvas.parentElement.style.height = '280px';
+        chartCanvas.parentElement.style.height = '300px';
         chartCanvas.parentElement.style.padding = '0';
         chartCanvas.parentElement.style.boxSizing = 'border-box';
-      }
+      }ㅍ
     });
   </script>
 </body>
