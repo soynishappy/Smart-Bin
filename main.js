@@ -1,7 +1,8 @@
 // Firebase 구성 및 초기화
 const firebaseConfig = {
   apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
-  authDomain: "smart-5c491.firebaseapp.com",
+  authDomain: "smart-5c491.fireb
+aseapp.com",
   projectId: "smart-5c491",
   storageBucket: "smart-5c491.appspot.com",
   messagingSenderId: "1002873500741",
@@ -33,8 +34,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     fetchUserTrashLogs(uid);
 
   } else {
-    alert("로그인이 필요합니다.");
-    window.location.href = 'login.html';
+    // 아무 동작 안 함 (로그아웃 후에도 "로그인이 필요합니다" 알림 제거)
+    if (!location.pathname.includes("login.html")) {
+      window.location.href = 'login.html';
+    }
   }
 });
 
