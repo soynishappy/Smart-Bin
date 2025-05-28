@@ -255,7 +255,7 @@
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1,
               barThickness: 20,
-              categoryPercentage: 1.0,
+              categoryPercentage: 0.5,
               barPercentage: 1.0
             }]
           },
@@ -276,14 +276,15 @@
                 title: {
                   display: true,
                   text: '날짜',
-                  align: 'end'  // 오른쪽 하단에 위치
+                  align: 'end'
                 },
                 ticks: {
                   align: 'center',
                   anchor: 'center',
                   maxRotation: 45,
                   minRotation: 45
-                }
+                },
+                offset: true
               }
             },
             plugins: {
@@ -295,10 +296,12 @@
         });
 
         // 모바일 화면 대응 CSS 적용
-        chartCanvas.parentElement.style.width = '100%';
-        chartCanvas.parentElement.style.maxWidth = '400px';
+        chartCanvas.parentElement.style.width = '100vw';
+        chartCanvas.parentElement.style.maxWidth = '100vw';
         chartCanvas.parentElement.style.margin = '0 auto';
-        chartCanvas.parentElement.style.height = '250px';
+        chartCanvas.parentElement.style.height = '280px';
+        chartCanvas.parentElement.style.padding = '0 10px';
+        chartCanvas.parentElement.style.boxSizing = 'border-box';
       }
     });
   </script>
