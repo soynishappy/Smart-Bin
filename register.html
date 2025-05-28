@@ -3,170 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>회원가입</title>
- <style>
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f2f2f2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-  }
-
-  .container {
-    background-color: white;
-    padding: 30px 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    width: 90%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  h1 {
-    margin-bottom: 20px;
-    font-size: 28px;
-    text-align: center;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  input {
-    margin-bottom: 15px;
-    padding: 16px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-
-  button {
-    background-color: #007BFF;
-    color: white;
-    padding: 16px;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-
-  button:hover {
-    background-color: #0056b3;
-  }
-
-  .link-btn {
-    background-color: #6c757d;
-  }
-
-  .link-btn:hover {
-    background-color: #495057;
-  }
-
-  .spacer {
-    margin-top: 15px;
-  }
-
-  @media (max-width: 480px) {
-    .container {
-      padding: 24px 16px;
+  <title>메인 페이지</title>
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-    h1 {
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h2, h3 {
       font-size: 24px;
+      margin-bottom: 16px;
+      text-align: center;
     }
 
-    input,
-    button {
-      font-size: 17px;
-      padding: 14px;
+    p {
+      text-align: center;
+      font-size: 16px;
+      margin: 4px 0;
     }
-  }
-</style>
+
+    #points {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    input, select {
+      margin-bottom: 12px;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    input[type="date"] {
+      color: #333;
+      font-size: 16px;
+    }
+
+    input[type="date"]::-webkit-datetime-edit {
+      color: #333;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .chart-container {
+      width: 100%;
+      max-width: 420px;
+      height: 300px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    #dailyChart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>회원가입</h1>
-    <form id="registerForm">
-      <input type="email" id="email" placeholder="이메일" required />
-      <input type="password" id="password" placeholder="비밀번호" required />
-      <button type="submit">회원가입하기</button>
-      <button type="button" class="link-btn" onclick="location.href='login.html'">
-        이미 계정이 있나요? 로그인하기
-      </button>
-    </form>
+  <h2>환영합니다!</h2>
+  <p id="user-info">사용자 정보를 불러오는 중...</p>
+  <p>포인트: <span id="points">0</span></p>
+
+  <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
+
+  <div class="chart-container">
+    <canvas id="dailyChart"></canvas>
   </div>
-</body>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
- const firebaseConfig = {
-  apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
-  authDomain: "smart-5c491.firebaseapp.com",
-  databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com",
-  projectId: "smart-5c491",
-  storageBucket: "smart-5c491.firebasestorage.app",
-  messagingSenderId: "1002873500741",
-  appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
-  measurementId: "G-YMSX9299M2"
-};
+  <button id="add-point-btn">포인트 적립 (테스트용)</button>
+  <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
+  <button id="logout">로그아웃</button>
 
+  <h3>날짜별 쓰레기 추가</h3>
+  <input type="date" id="custom-date" />
+  <select id="trash-type">
+    <option value="plastic">플라스틱</option>
+    <option value="glass">유리</option>
+    <option value="can">캔</option>
+  </select>
+  <input type="number" id="item-count" placeholder="수량 입력 (개수)" />
+  <button id="add-custom-trash">입력한 날짜로 쓰레기 추가</button>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const database = getDatabase(app);
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-document.getElementById('registerForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        set(ref(database, 'users/' + user.uid), {
-          email: email,
-          points: 0
-        });
-
-        alert('회원가입 성공! 로그인 페이지로 이동합니다.');
-        window.location.href = 'login.html';
-      })
-     .catch((error) => {
-      let errorMsg = '';
-
-      switch (error.code) {
-        case 'auth/email-already-in-use':
-          errorMsg = '이미 사용 중인 이메일입니다.';
-          break;
-        case 'auth/invalid-email':
-          errorMsg = '유효하지 않은 이메일 형식입니다.';
-          break;
-        case 'auth/weak-password':
-          errorMsg = '비밀번호는 최소 6자리 이상이어야 합니다.';
-          break;
-        default:
-          errorMsg = '회원가입에 실패했습니다. 다시 시도해주세요.';
-      }
-
-      alert(errorMsg);
-    });
-  });
+  <!-- Firebase 초기화 -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+      authDomain: "smart-5c491.firebaseapp.com",
+      projectId: "smart-5c491",
+      storageBucket: "smart-5c491.appspot.com",
+      messagingSenderId: "1002873500741",
+      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+      measurementId: "G-YMSX9299M2",
+      databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
   </script>
+
+  <!-- main.js 연결 -->
+  <script src="main.js"></script>
 </body>
 </html>
