@@ -5,50 +5,59 @@
   <title>로그인</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 400px;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
     h1 {
-      text-align: center;
-      font-size: 2rem;
       margin-bottom: 20px;
+      font-size: 28px;
     }
-    input, button {
-      width: 100%;
-      padding: 16px;
-      margin-bottom: 12px;
-      font-size: 1.1rem;
-      border-radius: 8px;
+    form {
+      background-color: white;
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+    input {
+      margin-bottom: 15px;
+      padding: 14px;
+      font-size: 16px;
       border: 1px solid #ccc;
-    }
-    button {
-      background-color: #2d89ef;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #1b61c2;
+      border-radius: 8px;
     }
     label {
-      font-size: 0.9rem;
+      margin-bottom: 15px;
+      font-size: 14px;
     }
-    p {
-      text-align: center;
-      font-size: 1rem;
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .link-btn {
+      background-color: #6c757d;
+    }
+    .link-btn:hover {
+      background-color: #495057;
     }
   </style>
 </head>
