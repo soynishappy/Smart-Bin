@@ -29,13 +29,12 @@
     p {
       text-align: center;
       font-size: 16px;
+      margin: 4px 0;
     }
 
     #points {
       font-size: 20px;
       font-weight: bold;
-      display: inline-block;
-      margin-top: 4px;
     }
 
     input, select {
@@ -71,7 +70,7 @@
 
     .chart-container {
       width: 100%;
-      max-width: 360px;
+      max-width: 420px;
       height: 300px;
       position: relative;
       margin-bottom: 20px;
@@ -90,6 +89,7 @@
   <p>포인트: <span id="points">0</span></p>
 
   <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
+
   <div class="chart-container">
     <canvas id="dailyChart"></canvas>
   </div>
@@ -113,7 +113,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-  <!-- main.js 연결 -->
+  <!-- 외부 메인 스크립트 -->
   <script src="main.js"></script>
 </body>
 </html>
