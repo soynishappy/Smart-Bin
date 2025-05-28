@@ -1,3 +1,17 @@
+// Firebase 구성 및 초기화
+const firebaseConfig = {
+  apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+  authDomain: "smart-5c491.firebaseapp.com",
+  projectId: "smart-5c491",
+  storageBucket: "smart-5c491.appspot.com",
+  messagingSenderId: "1002873500741",
+  appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+  measurementId: "G-YMSX9299M2",
+  databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
+};
+
+firebase.initializeApp(firebaseConfig);
+
 // 로그인한 사용자 정보 가져오기
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
