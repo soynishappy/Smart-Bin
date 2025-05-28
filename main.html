@@ -105,7 +105,7 @@
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           localStorage.removeItem("justLoggedOut");
-          document.getElementById("user-info").textContent = `환영합니다, ${user.email}님!`;
+          document.getElementById("user-info").textContent = 환영합니다, ${user.email}님!;
           firebase.database().ref("users/" + user.uid + "/points").once("value").then(snapshot => {
             const points = snapshot.val() || 0;
             document.getElementById("points").textContent = points;
@@ -127,7 +127,7 @@
           const currentPoints = snapshot.val()?.points || 0;
           const newPoints = currentPoints + 1;
           userRef.update({ points: newPoints });
-          alert(`포인트 적립 완료! 현재 포인트: ${newPoints}`);
+          alert(포인트 적립 완료! 현재 포인트: ${newPoints});
           document.getElementById("points").textContent = newPoints;
         });
       });
@@ -199,20 +199,19 @@
         if (!chartCanvas) return;
 
         new Chart(chartCanvas, {
-          type: 'bar',
+          type: 'line',
           data: {
             labels: sortedDates,
             datasets: [{
               label: '일별 탄소 절감량 (kg CO₂)',
               data: values,
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1
+              fill: false,
+              borderColor: 'green',
+              tension: 0.1
             }]
           },
           options: {
             responsive: true,
-            maintainAspectRatio: false,
             scales: {
               y: {
                 beginAtZero: true,
@@ -228,4 +227,4 @@
     });
   </script>
 </body>
-</html>
+</html> 
