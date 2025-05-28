@@ -31,12 +31,14 @@
       text-align: center;
     }
 
-    input {
+    input, select {
       margin-bottom: 15px;
       padding: 16px;
       font-size: 18px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
     }
 
     button {
@@ -54,14 +56,6 @@
 
     button:hover {
       background-color: #0056b3;
-    }
-
-    .link-btn {
-      background-color: #6c757d;
-    }
-
-    .link-btn:hover {
-      background-color: #495057;
     }
 
     .chart-container {
@@ -96,6 +90,17 @@
   <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
   <button id="logout">로그아웃</button>
 
+  <!-- 추가 입력 폼 -->
+  <h3>날짜별 쓰레기 추가</h3>
+  <input type="date" id="custom-date" />
+  <select id="trash-type">
+    <option value="plastic">플라스틱</option>
+    <option value="glass">유리</option>
+    <option value="can">캔</option>
+  </select>
+  <input type="number" id="item-count" placeholder="수량 입력 (개수)" />
+  <button id="add-custom-trash">입력한 날짜로 쓰레기 추가</button>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -114,6 +119,12 @@
         databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
       };
       firebase.initializeApp(firebaseConfig);
+
+      const AVERAGE_WEIGHTS = {
+        plastic: 50,
+        can: 15,
+        glass: 200
+      };
 
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
@@ -170,6 +181,29 @@
         } else {
           alert("로그인이 필요합니다.");
         }
+      });
+
+      document.getElementById("add-custom-trash").addEventListener("click", () => {
+        const user = firebase.auth().currentUser;
+        const date = document.getElementById("custom-date").value;
+        const type = document.getElementById("trash-type").value;
+        const count = parseInt(document.getElementById("item-count").value);
+        if (!user || !date || !type || isNaN(count) || count <= 0) return alert("모든 값을 올바르게 입력해주세요.");
+
+        const uid = user.uid;
+        const averageWeight = AVERAGE_WEIGHTS[type] || 50;
+        const totalWeight = count * averageWeight;
+
+        firebase.database().ref('trash_logs/' + uid).push({
+          type,
+          weight: totalWeight,
+          date
+        }).then(() => {
+          alert("✅ 날짜별 쓰레기 데이터가 추가되었습니다!");
+          location.reload();
+        }).catch(err => {
+          alert("❌ 오류: " + err.message);
+        });
       });
 
       function fetchUserTrashLogs(userId) {
