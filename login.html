@@ -119,7 +119,7 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+    const auth = getAuth(app);
 
     document.getElementById("loginForm").addEventListener("submit", function (e) {
       e.preventDefault();
