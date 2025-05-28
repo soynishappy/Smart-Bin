@@ -4,75 +4,71 @@
   <meta charset="UTF-8" />
   <title>메인 페이지</title>
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    padding: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-  .container {
-    background-color: #fff;
-    padding: 36px 48px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-  }
+    .container {
+      background-color: #fff;
+      padding: 36px 48px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
 
-  h1 {
-    font-size: 30px;
-    margin-bottom: 28px;
-  }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
 
-  p {
-    font-size: 20px;
-    margin: 16px 0;
-  }
+    #welcome-message {
+      font-size: 24px;
+      margin-bottom: 16px;
+      white-space: pre-line; /* 줄 바꿈 유지 */
+    }
 
-  #welcome-message {
-    font-size: 22px;
-    margin-bottom: 20px;
-  }
+    #points {
+      font-size: 24px;
+      margin-bottom: 28px;
+    }
 
-  #points {
-    font-size: 22px;
-    margin-bottom: 24px;
-  }
+    #button-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-  #button-group {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+    button {
+      background-color: #4CAF50; /* register/login 버튼 색상과 동일 */
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 20px;
+      padding: 14px 28px;
+      min-width: 140px;
+      transition: background-color 0.3s ease;
+    }
 
-  button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 16px 24px;
-    min-width: 140px;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #45a049;
-  }
-</style>
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
   <h2>환영합니다!</h2>
