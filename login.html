@@ -3,91 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <title>로그인</title>
- <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      background-color: #fff;
-      padding: 36px 48px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 24px;
-    }
-
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 18px 14px;
-      margin-bottom: 22px;
-      border: 1.5px solid #ccc;
-      border-radius: 12px;
-      font-size: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 20px;
-      font-size: 18px;
-      user-select: none;
-    }
-
-    input[type="checkbox"] {
-      transform: scale(1.3);
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-
-    button {
-      width: 48%;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 20px;
-      padding: 14px 0;
-      margin: 0 1%;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    .button-row {
-      display: flex;
-      justify-content: center;
-    }
-
-    a {
-      color: #4CAF50;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 18px;
-      line-height: 36px;
-    }
-  </style>
+  body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+h1 {
+  margin-bottom: 20px;
+  font-size: 36px; /* 기존 28px에서 키움 */
+}
+form {
+  background-color: white;
+  padding: 40px 30px; /* 기존 30px 20px에서 키움 */
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+input {
+  margin-bottom: 20px; /* 기존 15px에서 약간 키움 */
+  padding: 18px;       /* 기존 14px에서 키움 */
+  font-size: 22px;     /* 기존 16px에서 키움 */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+button {
+  background-color: #007BFF;
+  color: white;
+  padding: 18px;      /* 기존 14px에서 키움 */
+  font-size: 22px;    /* 기존 16px에서 키움 */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+button:hover {
+  background-color: #0056b3;
+}
+.link-btn {
+  background-color: #6c757d;
+}
+.link-btn:hover {
+  background-color: #495057;
+}
+</style>
 </head>
 <body>
   <h1>로그인</h1>
