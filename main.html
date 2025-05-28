@@ -233,7 +233,7 @@
         });
       }
 
- function renderDailyChart(dailyData) {
+      function renderDailyChart(dailyData) {
         const sortedDates = Object.keys(dailyData).sort().slice(-7);
         const values = sortedDates.map(date => dailyData[date].toFixed(2));
 
@@ -267,30 +267,19 @@
                 title: { display: true, text: 'kg CO₂' }
               },
               x: {
-                title: {
-                  display: true,
-                  text: '날짜',
-                  align: 'end'
-                },
-                ticks: {
-                  align: 'center',
-                  anchor: 'start'
-                }
+                title: { display: true, text: '날짜' },
+                ticks: { align: 'start' }
               }
             },
             plugins: {
               legend: {
                 align: 'start'
-              },
-              layout: {
-                padding: {
-                  left: 0
-                }
               }
             }
           }
         });
       }
+    });
   </script>
 </body>
 </html>
