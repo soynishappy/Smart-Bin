@@ -69,7 +69,7 @@
   <p>포인트: <span id="points">0</span></p>
 
   <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
- <canvas id="dailyChart" style="width: 100%; max-width: 100%; height: 300px;"></canvas>
+  <canvas id="dailyChart" style="width: 90%; max-width: 500px; height: auto;"></canvas>
 
   <button id="add-point-btn">포인트 적립 (테스트용)</button>
   <button id="logout">로그아웃</button>
@@ -191,19 +191,20 @@
         if (!chartCanvas) return;
 
         new Chart(chartCanvas, {
-          type: 'line',
+          type: 'bar',
           data: {
             labels: sortedDates,
             datasets: [{
               label: '일별 탄소 절감량 (kg CO₂)',
               data: values,
-              fill: false,
-              borderColor: 'green',
-              tension: 0.1
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
             }]
           },
           options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
               y: {
                 beginAtZero: true,
