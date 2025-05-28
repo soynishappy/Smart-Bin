@@ -18,7 +18,6 @@ firebase.auth().onAuthStateChanged(function(user) {
         console.error('포인트 로딩 오류:', error);
       });
 
-    // 🔽 탄소 절감량 계산 및 그래프 그리기
     fetchUserTrashLogs(uid);
 
   } else {
@@ -63,7 +62,6 @@ function fetchUserTrashLogs(userId) {
       }
     });
 
-    // 총 탄소 절감량 표시
     const totalSpan = document.getElementById("total-carbon");
     if (totalSpan) {
       totalSpan.textContent = totalCO2.toFixed(2);
@@ -80,7 +78,6 @@ function renderDailyChart(dailyData) {
   const chartCanvas = document.getElementById("dailyChart");
   if (!chartCanvas) return;
 
-  // 기존 차트 파괴 (중복 방지)
   if (window.dailyChartInstance) {
     window.dailyChartInstance.destroy();
   }
@@ -149,11 +146,10 @@ function renderDailyChart(dailyData) {
     }
   });
 
-  // 모바일 및 데스크탑에 대응하는 반응형 스타일 적용
   chartCanvas.parentElement.style.width = '100%';
-  chartCanvas.parentElement.style.maxWidth = '360px';
+  chartCanvas.parentElement.style.maxWidth = '420px';
   chartCanvas.parentElement.style.margin = '0 auto';
-  chartCanvas.parentElement.style.height = '300px';
+  chartCanvas.parentElement.style.height = '280px';
   chartCanvas.parentElement.style.padding = '0';
   chartCanvas.parentElement.style.boxSizing = 'border-box';
 }
