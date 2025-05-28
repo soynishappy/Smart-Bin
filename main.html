@@ -14,21 +14,11 @@
       font-family: 'Arial', sans-serif;
       background-color: #f2f2f2;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      background-color: white;
-      padding: 30px 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-      width: 90%;
-      max-width: 400px;
-      display: flex;
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
     }
 
     h1, h2, h3 {
@@ -58,6 +48,8 @@
       border-radius: 8px;
       cursor: pointer;
       margin-bottom: 10px;
+      width: 90%;
+      max-width: 400px;
     }
 
     button:hover {
@@ -73,44 +65,36 @@
     }
 
     .chart-container {
-      width: 100%;
+      width: 90%;
+      max-width: 400px;
       height: 300px;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      margin-bottom: 20px;
     }
 
     #dailyChart {
       width: 100% !important;
       height: 100% !important;
     }
-
-    .button-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h2>환영합니다!</h2>
-    <p id="user-info">사용자 정보를 불러오는 중...</p>
-    <p>포인트: <span id="points">0</span></p>
+  <h2>환영합니다!</h2>
+  <p id="user-info">사용자 정보를 불러오는 중...</p>
+  <p>포인트: <span id="points">0</span></p>
 
-    <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
-    <div class="chart-container">
-      <canvas id="dailyChart"></canvas>
-    </div>
-
-    <div class="button-row">
-      <button id="add-point-btn">포인트 적립 (테스트용)</button>
-      <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
-    </div>
-    <button id="logout">로그아웃</button>
+  <h3>총 탄소 절감량: <span id="total-carbon">0.00</span> kg CO₂</h3>
+  <div class="chart-container">
+    <canvas id="dailyChart"></canvas>
   </div>
+
+  <button id="add-point-btn">포인트 적립 (테스트용)</button>
+  <button id="test-add-trash">쓰레기 데이터 추가 (테스트용)</button>
+  <button id="logout">로그아웃</button>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
