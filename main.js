@@ -105,3 +105,21 @@ function renderDailyChart(dailyData) {
     }
   });
 }
+document.getElementById("test-add-trash").addEventListener("click", () => {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    const uid = user.uid;
+    firebase.database().ref('trash_logs/' + uid).push({
+      type: "plastic",
+      weight: 100,
+      date: new Date().toISOString().slice(0, 10)
+    }).then(() => {
+      alert("✅ 쓰레기 데이터가 추가되었습니다!");
+      location.reload(); // 새로고침하면 그래프와 탄소량도 반영됨
+    }).catch((err) => {
+      alert("❌ Firebase 쓰기 실패: " + err.message);
+    });
+  } else {
+    alert("로그인이 필요합니다.");
+  }
+});
