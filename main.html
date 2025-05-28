@@ -231,7 +231,7 @@
           const totalSpan = document.getElementById("total-carbon");
           if (totalSpan) totalSpan.textContent = totalCO2.toFixed(2);
 
-        renderDailyChart(dailyTotals);
+ renderDailyChart(dailyTotals);
         });
       }
 
@@ -257,8 +257,8 @@
               backgroundColor: 'rgba(75, 192, 192, 0.6)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1,
-              barThickness: 20,
-              categoryPercentage: 0.6,
+              barThickness: 24,
+              categoryPercentage: 0.8,
               barPercentage: 0.9
             }]
           },
@@ -273,7 +273,12 @@
               y: {
                 beginAtZero: true,
                 max: 5.0,
-                title: { display: true, text: 'kg CO₂' }
+                title: { display: true, text: 'kg CO₂' },
+                ticks: {
+                  font: {
+                    size: 14
+                  }
+                }
               },
               x: {
                 title: {
@@ -295,7 +300,12 @@
             },
             plugins: {
               legend: {
-                align: 'start'
+                align: 'start',
+                labels: {
+                  font: {
+                    size: 14
+                  }
+                }
               }
             }
           }
@@ -303,12 +313,12 @@
 
         // 모바일 및 데스크탑에 대응하는 반응형 스타일 적용
         chartCanvas.parentElement.style.width = '100%';
-        chartCanvas.parentElement.style.maxWidth = '100%';
+        chartCanvas.parentElement.style.maxWidth = '420px';
         chartCanvas.parentElement.style.margin = '0 auto';
-        chartCanvas.parentElement.style.height = '300px';
+        chartCanvas.parentElement.style.height = '280px';
         chartCanvas.parentElement.style.padding = '0';
         chartCanvas.parentElement.style.boxSizing = 'border-box';
-      }ㅍ
+      }
     });
   </script>
 </body>
