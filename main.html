@@ -52,7 +52,12 @@
       font-size: 16px;
     }
 
-    input[type="date"]::-webkit-datetime-edit {
+    input[type="date"]::-webkit-datetime-edit,
+    input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+    input[type="date"]::-webkit-datetime-edit-text,
+    input[type="date"]::-webkit-datetime-edit-month-field,
+    input[type="date"]::-webkit-datetime-edit-day-field,
+    input[type="date"]::-webkit-datetime-edit-year-field {
       color: #333;
       font-size: 16px;
     }
@@ -119,7 +124,24 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
+  <!-- Firebase 초기화 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+        authDomain: "smart-5c491.firebaseapp.com",
+        projectId: "smart-5c491",
+        storageBucket: "smart-5c491.appspot.com",
+        messagingSenderId: "1002873500741",
+        appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+        measurementId: "G-YMSX9299M2",
+        databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com"
+      };
+      firebase.initializeApp(firebaseConfig);
+    });
+  </script>
+
   <!-- main.js 연결 -->
-  <script src="main.js"></script>
+  <script src="main.js?v=1.0.1"></script>
 </body>
 </html>
