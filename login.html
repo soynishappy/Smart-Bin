@@ -108,17 +108,16 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
-  authDomain: "smart-5c491.firebaseapp.com",
-  databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com",
-  projectId: "smart-5c491",
-  storageBucket: "smart-5c491.firebasestorage.app",
-  messagingSenderId: "1002873500741",
-  appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
-  measurementId: "G-YMSX9299M2"
-};
-
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVtB-5G932ZqNpn7a541p2iXZ_ZYGW-nU",
+      authDomain: "smart-5c491.firebaseapp.com",
+      databaseURL: "https://smart-5c491-default-rtdb.firebaseio.com",
+      projectId: "smart-5c491",
+      storageBucket: "smart-5c491.firebasestorage.app",
+      messagingSenderId: "1002873500741",
+      appId: "1:1002873500741:web:f3e9e142e00a6350d6df2c",
+      measurementId: "G-YMSX9299M2"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -130,8 +129,26 @@ const firebaseConfig = {
 
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // 로그인 성공: main.html로 이동
-          window.location.href = "main.html";
+          const user = userCredential.user;
+
+          // ✅ Pi로 UID 전송
+          fetch("http://라즈베리파이_IP:5000/set_uid", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ uid: user.uid })
+          })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("✅ Pi로 UID 전송 성공:", data);
+            window.location.href = "main.html"; // 전송 성공 후 이동
+          })
+          .catch((error) => {
+            console.error("❌ UID 전송 실패:", error);
+            alert("로그인은 성공했지만 Pi 전송에 실패했습니다.");
+            window.location.href = "main.html"; // 실패해도 이동은 함
+          });
         })
         .catch((error) => {
           let message = "로그인에 실패했습니다. 다시 시도해주세요.";
@@ -148,4 +165,3 @@ const firebaseConfig = {
   </script>
 </body>
 </html>
-
