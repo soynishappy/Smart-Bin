@@ -49,46 +49,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 포인트 적립 버튼 이벤트 등록
-  document.getElementById("add-point-btn")?.addEventListener("click", () => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      const uid = user.uid;
-      const userRef = firebase.database().ref("users/" + uid);
-      userRef.once("value").then((snapshot) => {
-        const data = snapshot.val() || {};
-        const currentPoints = data.points || 0;
-        const updatedPoints = currentPoints + 10;
-        userRef.update({ points: updatedPoints }).then(() => {
-          alert("✅ 포인트가 적립되었습니다!");
-          document.getElementById("points").textContent = updatedPoints;
-        });
-      });
-    } else {
-      alert("로그인이 필요합니다.");
-    }
-  });
-
-  // 쓰레기 데이터 테스트 추가 버튼
-  document.getElementById("test-add-trash")?.addEventListener("click", () => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      const uid = user.uid;
-      firebase.database().ref('trash_logs/' + uid).push({
-        type: "plastic",
-        weight: 100,
-        date: new Date().toISOString().slice(0, 10)
-      }).then(() => {
-        alert("✅ 쓰레기 데이터가 추가되었습니다!");
-        location.reload();
-      }).catch((err) => {
-        alert("❌ Firebase 쓰기 실패: " + err.message);
-      });
-    } else {
-      alert("로그인이 필요합니다.");
-    }
-  });
-
   // 입력한 날짜로 쓰레기 추가 버튼
   document.getElementById("add-custom-trash")?.addEventListener("click", () => {
     const user = firebase.auth().currentUser;
@@ -106,12 +66,22 @@ window.addEventListener("DOMContentLoaded", () => {
       const weightPerItem = 10; // 가정값
       const totalWeight = count * weightPerItem;
 
+      // 쓰레기 로그 저장
       firebase.database().ref('trash_logs/' + uid).push({
         type: type,
         weight: totalWeight,
         date: date
       }).then(() => {
-        alert("✅ 입력한 날짜로 쓰레기 데이터가 추가되었습니다!");
+        // 포인트 업데이트
+        const pointRef = firebase.database().ref('users/' + uid + '/points');
+        pointRef.once("value").then(snapshot => {
+          const currentPoints = snapshot.exists() ? snapshot.val() : 0;
+          const updatedPoints = currentPoints + count;
+          pointRef.set(updatedPoints);
+          document.getElementById("points").textContent = updatedPoints;
+        });
+
+        alert("✅ 입력한 날짜로 쓰레기 데이터가 추가되었습니다! (+" + count + " 포인트)");
         location.reload();
       }).catch((err) => {
         alert("❌ Firebase 쓰기 실패: " + err.message);
@@ -239,29 +209,3 @@ function renderDailyChart(dailyData) {
   chartCanvas.parentElement.style.padding = '0';
   chartCanvas.parentElement.style.boxSizing = 'border-box';
 }
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const addTrashBtn = document.getElementById("test-add-trash");
-  if (addTrashBtn) {
-    addTrashBtn.addEventListener("click", () => {
-      const user = firebase.auth().currentUser;
-      if (user) {
-        const uid = user.uid;
-        firebase.database().ref('trash_logs/' + uid).push({
-          type: "plastic",
-          weight: 100,
-          date: new Date().toISOString().slice(0, 10)
-        }).then(() => {
-          alert("✅ 쓰레기 데이터가 추가되었습니다!");
-          location.reload();
-        }).catch((err) => {
-          alert("❌ Firebase 쓰기 실패: " + err.message);
-        });
-      } else {
-        alert("로그인이 필요합니다.");
-      }
-    });
-  }
-});
