@@ -165,7 +165,7 @@ function renderDailyChart(dailyData) {
         y: {
           beginAtZero: true,
           min: 0
-          max: 5.0,
+          max: 3.0,
           title: { display: true, text: 'kg CO₂' },
           ticks: {
             stepsize: 0.5,
