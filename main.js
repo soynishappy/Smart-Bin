@@ -167,6 +167,7 @@ function renderDailyChart(dailyData) {
           max: 5.0,
           title: { display: true, text: 'kg CO₂' },
           ticks: {
+            stepsize: 0.5
             font: {
               size: 16
             }
