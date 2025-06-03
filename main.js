@@ -164,10 +164,14 @@ function renderDailyChart(dailyData) {
       scales: {
         y: {
           beginAtZero: true,
+          min: 0
           max: 5.0,
           title: { display: true, text: 'kg CO₂' },
           ticks: {
             stepsize: 0.5,
+            callback: function(value) {
+        return value.toFixed(1);
+            },
             font: {
               size: 16
             }
