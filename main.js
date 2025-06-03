@@ -144,7 +144,7 @@ function renderDailyChart(dailyData) {
     data: {
       labels: sortedDates,
       datasets: [{
-        label: '일별 탄소 배출 저감량 (kg CO₂)',
+        label: '일별 탄소 배출 감소량 (kg CO₂)',
         data: values,
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
