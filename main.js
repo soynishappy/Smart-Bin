@@ -165,10 +165,10 @@ function renderDailyChart(dailyData) {
         y: {
           beginAtZero: true,
           min: 0,
-          max: 3.0,
+          max: 1.0,
           title: { display: true, text: 'kg CO₂' },
           ticks: {
-            stepsize: 0.5,
+            stepsize: 0.05,
             callback: function(value) {
         return value.toFixed(1);
             },
