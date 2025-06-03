@@ -50,46 +50,47 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // 입력한 날짜로 쓰레기 추가 버튼
-  document.getElementById("add-custom-trash")?.addEventListener("click", () => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      const uid = user.uid;
-      const date = document.getElementById("custom-date").value;
-      const type = document.getElementById("trash-type").value;
-      const count = parseInt(document.getElementById("item-count").value);
+document.getElementById("add-custom-trash")?.addEventListener("click", () => {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    const uid = user.uid;
+    const date = document.getElementById("custom-date").value;
+    const type = document.getElementById("trash-type").value;
+    const count = parseInt(document.getElementById("item-count").value);
 
-      if (!date || isNaN(count) || count <= 0) {
-        alert("날짜와 수량을 정확히 입력해 주세요.");
-        return;
-      }
-
-      const weightPerItem = 10; // 가정값
-      const totalWeight = count * weightPerItem;
-
-      // 쓰레기 로그 저장
-      firebase.database().ref('trash_logs/' + uid).push({
-        type: type,
-        weight: totalWeight,
-        date: date
-      }).then(() => {
-        // 포인트 업데이트
-        const pointRef = firebase.database().ref('users/' + uid + '/points');
-        pointRef.once("value").then(snapshot => {
-          const currentPoints = snapshot.exists() ? snapshot.val() : 0;
-          const updatedPoints = currentPoints + count;
-          pointRef.set(updatedPoints);
-          document.getElementById("points").textContent = updatedPoints;
-        });
-
-        alert("✅ 입력한 날짜로 쓰레기 데이터가 추가되었습니다! (+" + count + " 포인트)");
-        location.reload();
-      }).catch((err) => {
-        alert("❌ Firebase 쓰기 실패: " + err.message);
-      });
-    } else {
-      alert("로그인이 필요합니다.");
+    if (!date || isNaN(count) || count <= 0) {
+      alert("날짜와 수량을 정확히 입력해 주세요.");
+      return;
     }
-  });
+
+    const weightPerItem = 10; // 가정값
+    const totalWeight = count * weightPerItem;
+
+    // 쓰레기 로그 저장
+    firebase.database().ref('trash_logs/' + uid).push({
+      type: type,
+      weight: totalWeight,
+      date: date
+    }).then(() => {
+      // 포인트 업데이트
+      const pointRef = firebase.database().ref('users/' + uid + '/points');
+      pointRef.once("value").then(snapshot => {
+        const currentPoints = snapshot.exists() ? snapshot.val() : 0;
+        const updatedPoints = currentPoints + count;
+        pointRef.set(updatedPoints).then(() => {
+          document.getElementById("points").textContent = updatedPoints;
+          alert(`✅ 입력한 날짜로 쓰레기 데이터가 추가되었습니다! (+${count} 포인트)`);
+          // ❗️ 포인트 반영 후 새로고침
+          location.reload();
+        });
+      });
+    }).catch((err) => {
+      alert("❌ Firebase 쓰기 실패: " + err.message);
+    });
+  } else {
+    alert("로그인이 필요합니다.");
+  }
+});
 });
 
 // 탄소 절감량 계산 및 날짜별 그래프
